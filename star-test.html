@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Animation Test - Haus of Lyra</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="star-animation.css">
+  <style>
+    /* Quick test styling */
+    .test-content {
+      position: relative;
+      z-index: 10;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 100px 20px;
+      text-align: center;
+    }
+    
+    .test-content h1 {
+      color: var(--gold);
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+    
+    .test-content p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    
+    .pillar {
+      background: rgba(206, 173, 111, 0.1);
+      border: 1px solid rgba(206, 173, 111, 0.3);
+      padding: 1.5rem 1rem;
+      border-radius: 8px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <!-- Film Grain Overlay -->
+  <div class="noise-overlay"></div>
+
+  <div class="test-content">
+    <h1>HAUS OF LYRA</h1>
+    <p>Watch the stars twinkle above as you scroll through this preview. The constellation stars represent our five brand pillars, while shooting stars occasionally streak across the sky.</p>
+    <p>The animation is subtle and elegant - perfect for your poetic, elevated brand voice.</p>
+    
+    <div class="pillars">
+      <div class="pillar">Intentionality</div>
+      <div class="pillar">Creativity</div>
+      <div class="pillar">Connection</div>
+      <div class="pillar">Artistry</div>
+      <div class="pillar">Storytelling</div>
+    </div>
+    
+    <p style="margin-top: 3rem; opacity: 0.6;">Scroll down to see how it feels with more content...</p>
+    
+    <!-- Spacer content -->
+    <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+      <p style="opacity: 0.5;">The stars continue to shine as you navigate...</p>
+    </div>
+    
+    <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+      <p style="opacity: 0.5;">Perfect for your wedding photography and film portfolio pages.</p>
+    </div>
+  </div>
+
+  <script src="star-animation.js"></script>
+</body>
+</html>

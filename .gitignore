@@ -1,0 +1,23 @@
+# Ignore macOS system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore heavy media folders (backup these to Google Drive / Hostinger instead)
+wedding-pictures/
+senior-pictures/
+vendor-images/
+
+# Ignore python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.env

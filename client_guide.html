@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Haus of Lyra Client Guide</title>
+  <!-- Import Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* --- CSS DESIGN SYSTEM FOR PRINT --- */
+    :root {
+      --background: #050506;
+      --foreground: #f4f4f5;
+      --muted-foreground: #a1a1aa;
+      --gold: #cead6f;
+      --silver: #e2e8f0;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --font-sans: 'Inter', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --font-display: 'Bebas Neue', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+      font-size: 11pt;
+      line-height: 1.6;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Page-break definitions for printing */
+    @page {
+      size: letter;
+      margin: 0; /* Let HTML containers handle margins to allow full bleed cover */
+    }
+
+    .page {
+      width: 8.5in;
+      height: 11in;
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+      background-color: var(--background);
+      padding: 1in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Page specific overrides */
+    .page.cover {
+      padding: 0;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: radial-gradient(circle at center, #111115 0%, #050506 100%);
+    }
+
+    /* Cover Page Elements */
+    .cover-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 2in 1in;
+    }
+
+    .cover-brand {
+      font-family: var(--font-display);
+      font-size: 40pt;
+      letter-spacing: 0.1em;
+      color: #fff;
+      margin-bottom: 0.25in;
+    }
+
+    .cover-brand span {
+      color: var(--gold);
+    }
+
+    .cover-divider {
+      width: 1.5in;
+      height: 1px;
+      background-color: var(--gold);
+      margin: 0.3in 0;
+    }
+
+    .cover-subtitle {
+      font-family: var(--font-serif);
+      font-size: 16pt;
+      font-style: italic;
+      letter-spacing: 0.05em;
+      color: var(--silver);
+      margin-bottom: 1.5in;
+    }
+
+    .cover-footer {
+      font-family: var(--font-sans);
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted-foreground);
+    }
+
+    /* Headers and Footers */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.15in;
+      margin-bottom: 0.4in;
+    }
+
+    .header-brand {
+      font-family: var(--font-display);
+      font-size: 14pt;
+      letter-spacing: 0.05em;
+      color: #fff;
+    }
+
+    .header-brand span {
+      color: var(--gold);
+    }
+
+    .header-title {
+      font-family: var(--font-sans);
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted-foreground);
+    }
+
+    .page-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.15in;
+      margin-top: 0.4in;
+      font-family: var(--font-sans);
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted-foreground);
+    }
+
+    /* Content Typography */
+    .content-body {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .section-kicker {
+      font-family: var(--font-sans);
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 0.1in;
+      font-weight: 500;
+    }
+
+    h1.page-title {
+      font-family: var(--font-serif);
+      font-size: 26pt;
+      font-weight: 400;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 0.3in;
+    }
+
+    h2.section-title {
+      font-family: var(--font-serif);
+      font-size: 18pt;
+      font-weight: 400;
+      color: #fff;
+      margin-top: 0.4in;
+      margin-bottom: 0.15in;
+    }
+
+    p {
+      color: var(--muted-foreground);
+      margin-bottom: 0.2in;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    p.lead-text {
+      font-size: 12pt;
+      color: var(--silver);
+      margin-bottom: 0.25in;
+    }
+
+    .editorial-quote {
+      font-family: var(--font-serif);
+      font-size: 14pt;
+      color: #fff;
+      font-style: italic;
+      border-left: 2px solid var(--gold);
+      padding-left: 0.2in;
+      margin: 0.3in 0;
+      line-height: 1.6;
+    }
+
+    /* Core Values list */
+    .values-list {
+      list-style: none;
+      margin-top: 0.2in;
+    }
+
+    .value-item {
+      margin-bottom: 0.2in;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      padding-bottom: 0.15in;
+    }
+
+    .value-title {
+      font-family: var(--font-serif);
+      font-size: 12pt;
+      color: #fff;
+      margin-bottom: 0.05in;
+    }
+
+    .value-title span {
+      color: var(--gold);
+      margin-right: 0.1in;
+    }
+
+    /* Experience Steps */
+    .steps-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.3in;
+      margin-top: 0.2in;
+    }
+
+    .step-box {
+      border: 1px solid var(--border-color);
+      padding: 0.2in;
+      border-radius: 6px;
+      background-color: rgba(255, 255, 255, 0.01);
+    }
+
+    .step-number {
+      font-family: var(--font-display);
+      font-size: 12pt;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.05in;
+    }
+
+    .step-title {
+      font-family: var(--font-serif);
+      font-size: 11pt;
+      color: #fff;
+      margin-bottom: 0.05in;
+    }
+
+    /* Collections/Pricing cards */
+    .collections-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.25in;
+      margin-top: 0.2in;
+    }
+
+    .collection-card {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.35in;
+      background-color: rgba(255, 255, 255, 0.015);
+      position: relative;
+    }
+
+    .collection-card.featured {
+      border-color: rgba(206, 173, 111, 0.3);
+      background-color: rgba(206, 173, 111, 0.02);
+    }
+
+    .badge {
+      position: absolute;
+      top: 0.35in;
+      right: 0.35in;
+      font-size: 7pt;
+      font-weight: 600;
+      background-color: var(--silver);
+      color: #000;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.15in;
+      margin-bottom: 0.2in;
+    }
+
+    .collection-title {
+      font-family: var(--font-serif);
+      font-size: 18pt;
+      color: #fff;
+    }
+
+    .collection-price {
+      font-family: var(--font-serif);
+      font-size: 20pt;
+      color: var(--gold);
+    }
+
+    .collection-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.1in 0.3in;
+      list-style: none;
+      font-size: 9.5pt;
+      color: var(--muted-foreground);
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .feature-item::before {
+      content: "•";
+      color: var(--gold);
+      margin-right: 0.08in;
+      font-size: 12pt;
+    }
+
+    /* FAQ formatting */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25in;
+      margin-top: 0.2in;
+    }
+
+    .faq-item h3 {
+      font-family: var(--font-serif);
+      font-size: 11pt;
+      color: #fff;
+      margin-bottom: 0.05in;
+      font-weight: 500;
+    }
+
+    /* CTA page elements */
+    .cta-container {
+      text-align: center;
+      padding: 0.5in 0;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      margin-top: 0.4in;
+      padding: 0.15in 0.4in;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: var(--font-sans);
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .bullet-list-check {
+      list-style: none;
+      margin: 0.2in 0;
+    }
+
+    .bullet-list-check li {
+      margin-bottom: 0.1in;
+      color: var(--silver);
+      display: flex;
+      align-items: center;
+    }
+
+    .bullet-list-check li::before {
+      content: "✓";
+      color: var(--gold);
+      font-weight: bold;
+      margin-right: 0.15in;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: COVER -->
+  <div class="page cover">
+    <div class="cover-content">
+      <div class="cover-brand">HAUS OF <span>LYRA</span></div>
+      <div class="cover-divider"></div>
+      <div class="cover-subtitle">Client Welcome &amp; Investment Guide</div>
+      <div class="cover-footer">Des Moines, Iowa</div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: WELCOME -->
+  <div class="page">
+    <div class="page-header">
+      <div class="header-brand">HAUS OF <span>LYRA</span></div>
+      <div class="header-title">Welcome</div>
+    </div>
+    <div class="content-body">
+      <span class="section-kicker">Introduction</span>
+      <h1 class="page-title">First things first, thank you.</h1>
+      
+      <p class="lead-text">
+        The fact that you're reading this means you're planning one of the biggest days of your life, and somewhere along the way our paths crossed. Whether you're still deep in the research spiral or already wondering if Haus of Lyra might be the one, I'm honored you're here.
+      </p>
+
+      <p>
+        I'm Dakota. Before we get into timelines, collections, and coverage, I want to talk about stories, because that's really what this is all about.
+      </p>
+
+      <p>
+        Years from now, the flowers will be gone. The cake will be eaten. The decorations will be packed away. But the stories? Those last.
+      </p>
+
+      <div class="editorial-quote">
+        "My job isn't just to document your wedding day. It's to preserve the feeling of it."
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>Client Guide</div>
+      <div>Page 2</div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: WHY IT MATTERS & THE ORIGIN -->
+  <div class="page">
+    <div class="page-header">
+      <div class="header-brand">HAUS OF <span>LYRA</span></div>
+      <div class="header-title">The Philosophy</div>
+    </div>
+    <div class="content-body">
+      <span class="section-kicker">Perspective</span>
+      <h1 class="page-title">Why your photographs matter.</h1>
+      
+      <p>
+        Your wedding day will move faster than you think. Months of planning become hours. Hours become memories. Before long you'll find yourself wishing you could revisit moments you barely had time to feel the first time around.
+      </p>
+      
+      <p class="lead-text" style="color: #fff;">
+        That's what your photographs are for.
+      </p>
+      
+      <p>
+        They're the one thing from the day that actually grows in value. The flowers wilt and the playlist ends, but the images only get more precious as the years stack up.
+      </p>
+
+      <h2 class="section-title">The Story Behind The Name</h2>
+      <p>
+        The name comes from the Lyra constellation. In Greek mythology, it represents the lyre of Orpheus, a small harp said to make music beautiful enough to tame wild beasts and soothe any sorrow.
+      </p>
+      <p>
+        For me, though, the inspiration is centered on its five brightest stars. I have given each one a meaning of my own—the five brand pillars behind everything I do:
+      </p>
+      
+      <ul class="values-list">
+        <li class="value-item">
+          <div class="value-title"><span>★</span> Connection</div>
+          <p style="margin-bottom:0; font-size:9.5pt;">The best photographs happen when people feel comfortable being themselves.</p>
+        </li>
+        <li class="value-item">
+          <div class="value-title"><span>★</span> Artistry</div>
+          <p style="margin-bottom:0; font-size:9.5pt;">Anyone can take a picture. Timeless takes intention.</p>
+        </li>
+      </ul>
+    </div>
+    <div class="page-footer">
+      <div>Client Guide</div>
+      <div>Page 3</div>
+    </div>
+  </div>
+
+  <!-- PAGE 4: THE FIVE PILLARS & MEET DAKOTA -->
+  <div class="page">
+    <div class="page-header">
+      <div class="header-brand">HAUS OF <span>LYRA</span></div>
+      <div class="header-title">The Pillars &amp; Dakota</div>
+    </div>
+    <div class="content-body">
+      <ul class="values-list" style="margin-top:0;">
+        <li class="value-item">
+          <div class="value-title"><span>★</span> Intention</div>
+          <p style="margin-bottom:0; font-size:9.5pt;">Every recommendation and choice, made on purpose.</p>
+        </li>
+        <li class="value-item">
+          <div class="value-title"><span>★</span> Creativity</div>
+          <p style="margin-bottom:0; font-size:9.5pt;">No two couples are the same, so no copy-and-paste weddings.</p>
+        </li>
+        <li class="value-item">
+          <div class="value-title"><span>★</span> Storytelling</div>
+          <p style="margin-bottom:0; font-size:9.5pt;">The brightest star, because every frame exists to tell your story.</p>
+        </li>
+      </ul>
+
+      <span class="section-kicker" style="margin-top: 0.3in;">Behind The Lens</span>
+      <h1 class="page-title" style="font-size: 22pt; margin-bottom: 0.15in;">Meet Dakota</h1>
+      <p>
+        I've been creating photographs since 2012, with over a decade spent behind the camera. On top of my own work, I shoot 25 or more weddings a year for other studios and companies, so a wedding day is well-worn territory for me. Before launching Haus of Lyra, I spent years in business development, marketing, and creative work, handling branding, commercial shoots, and full campaigns—all under real deadlines where there are no second takes.
+      </p>
+      <p>
+        Here's what that means for your wedding: I know how to read a room, find the best light fast, keep a timeline on track, and capture the moments that disappear in a blink, all while staying calm and out of the way. You won't have to manage me. That's the job.
+      </p>
+      <p>
+        Off the clock, you'll find me catering to the excessive demands of my two cats, Smokey and Storm, or hanging out with my niece and nephew.
+      </p>
+    </div>
+    <div class="page-footer">
+      <div>Client Guide</div>
+      <div>Page 4</div>
+    </div>
+  </div>
+
+  <!-- PAGE 5: WHY I DO THIS -->
+  <div class="page">
+    <div class="page-header">
+      <div class="header-brand">HAUS OF <span>LYRA</span></div>
+      <div class="header-title">The Purpose</div>
+    </div>
+    <div class="content-body">
+      <span class="section-kicker">My Vision</span>
+      <h1 class="page-title">Why I do this.</h1>
+      
+      <p class="lead-text">
+        A wedding day is made of so much more than the big moments.
+      </p>
+
+      <p>
+        It's the details. The quirks. The traditions only your family understands. The inside joke that takes down an entire table. The thing your grandmother always says.
+      </p>
+      <p>
+        Some of my favorite images look completely ordinary to a stranger—a folded handkerchief, a particular song, a glance held a beat too long across a crowded room. But to you, those frames carry an entire story, a meaning and a symbolism that speaks volumes.
+      </p>
+      <p>
+        That's what I'm really there for. Not just the first kiss and the cake, but the small, loaded, easy-to-miss moments you'll want to feel again and again.
+      </p>
+
+      <h2 class="section-title">More Than a Photographer</h2>
+      <p>
+        The person you hire isn't just making images. Aside from your partner, they're the one person with you for the entire day, from the quiet nerves in the morning to the last song of the night. That's a lot of trust to hand someone.
+      </p>
+      <p>
+        You want that person genuinely in your corner, not just there for a paycheck. I take that to heart. I care about the couples I work with, and I stay connected with them long after the wedding is over.
+      </p>
+    </div>
+    <div class="page-footer">
+      <div>Client Guide</div>
+      <div>Page 5</div>
+    </div>
+  </div>
+
+  <!-- PAGE 6: THE EXPERIENCE -->
+  <div class="page">
+    <div class="page-header">
+      <div class="header-brand">HAUS OF <span>LYRA</span></div>
+      <div class="header-title">The Experience</div>
+    </div>
+    <div class="content-body">
+      <span class="section-kicker">What to Expect</span>
+      <h1 class="page-title" style="margin-bottom: 0.15in;">What makes us different.</h1>
+      
+      <p>
+        A lot of photographers talk about delivering images. I care about that too. But what I'm really delivering is an experience. I want you comfortable. I want the day to feel fun. I want you guided when you need it and free to just be yourselves when you don't.
+      </p>
+
+      <ul class="bullet-list-check">
+        <li>You'll never be expected to know how to pose.</li>
+        <li>You'll never be expected to perform for the camera.</li>
+        <li>You'll never be left wondering what's next.</li>
+      </ul>
+
+      <p style="margin-bottom: 0.3in;">
+        I'll be there every step, helping the day feel natural, intentional, and refreshingly low-stress.
+      </p>
+
+      <div class="steps-container">
+        <div class="step-box">
+          <div class="step-number">Step 1</div>
+          <div class="step-title">You're Already Here</div>
+          <p style="font-size: 8.5pt; margin-bottom: 0; line-height: 1.5;">By reading this guide, you've taken the first step. No pressure, no sales pitch, just the start of getting to know each other.</p>
+        </div>
+        <div class="step-box">
+          <div class="step-number">Step 2</div>
+          <div class="step-title">The Call</div>
+          <p style="font-size: 8.5pt; margin-bottom: 0; line-height: 1.5;">We hop on a quick call to talk through your day, your priorities, and your vision, making sure we're the right fit.</p>
+        </div>
+        <div class="step-box">
+          <div class="step-number">Step 3</div>
+          <div class="step-title">Booking</div>
+          <p style="font-size: 8.5pt; margin-bottom: 0; line-height: 1.5;">Simple and online. Contract and retainer, done, your date is secured.</p>
+        </div>
+        <div class="step-box">
+          <div class="step-number">Step 4</div>
+          <div class="step-title">The Engagement</div>
+          <p style="font-size: 8.5pt; margin-bottom: 0; line-height: 1.5;">Every collection includes a session to get comfortable in front of the camera long before the big day.</p>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>Client Guide</div>
+      <div>Page 6</div>
+    </div>
+  </div>
+
+  <!-- PAGE 7: EXPERIENCE STEPS 5 & 6 & COLLECTIONS -->
+  <div class="page">
+    <div class="page-header">
+      <div class="header-brand">HAUS OF <span>LYRA</span></div>
+      <div class="header-title">The Collections</div>
+    </div>
+    <div class="content-body">
+      <div class="steps-container" style="margin-top:0; margin-bottom: 0.3in;">
+        <div class="step-box">
+          <div class="step-number">Step 5</div>
+          <div class="step-title">Planning</div>
+          <p style="font-size: 8.5pt; margin-bottom: 0; line-height: 1.5;">We work together leading up to the wedding, building a timeline that protects the moments that matter.</p>
+        </div>
+        <div class="step-box">
+          <div class="step-number">Step 6</div>
+          <div class="step-title">Wedding Day</div>
+          <p style="font-size: 8.5pt; margin-bottom: 0; line-height: 1.5;">You get married. I tell the story. Your sneak peeks land first, and your full gallery follows in 35 days.</p>
+        </div>
+      </div>
+
+      <span class="section-kicker">Investment</span>
+      <h1 class="page-title" style="margin-bottom: 0.15in;">The Collections</h1>
+
+      <div class="collections-container">
+        <!-- ESSENTIAL -->
+        <div class="collection-card">
+          <div class="card-header">
+            <h3 class="collection-title">Essential</h3>
+            <span class="collection-price">$2,500</span>
+          </div>
+          <p style="font-size: 9pt; margin-bottom: 0.15in; font-style: italic;">Everything you need to tell the story of your day, beautifully.</p>
+          <ul class="collection-features">
+            <li class="feature-item">Up to 6 hours of coverage</li>
+            <li class="feature-item">One photographer</li>
+            <li class="feature-item">30-minute engagement session</li>
+            <li class="feature-item">Timeline consultation</li>
+            <li class="feature-item">Online gallery + print release</li>
+            <li class="feature-item">Sneak peeks within 48 hours</li>
+            <li class="feature-item">Full gallery in 35 days</li>
+            <li class="feature-item">Two keepsake flash drives</li>
+          </ul>
+        </div>
+
+        <!-- SIGNATURE -->
+        <div class="collection-card featured">
+          <span class="badge">Most Popular</span>
+          <div class="card-header">
+            <h3 class="collection-title">Signature</h3>
+            <span class="collection-price">$4,000</span>
+          </div>
+          <p style="font-size: 9pt; margin-bottom: 0.15in; font-style: italic;">Full coverage, two shooters, more of your day from every angle.</p>
+          <ul class="collection-features">
+            <li class="feature-item">Full-day coverage</li>
+            <li class="feature-item">Lead + second photographer</li>
+            <li class="feature-item">1-hour engagement session</li>
+            <li class="feature-item">Timeline planning assistance</li>
+            <li class="feature-item">Online gallery + print release</li>
+            <li class="feature-item">Sneak peeks within 48 hours</li>
+            <li class="feature-item">Full gallery in 35 days</li>
+            <li class="feature-item">Two keepsake flash drives</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>Client Guide</div>
+      <div>Page 7</div>
+    </div>
+  </div>
+
+  <!-- PAGE 8: PREMIERE & FAQ -->
+  <div class="page">
+    <div class="page-header">
+      <div class="header-brand">HAUS OF <span>LYRA</span></div>
+      <div class="header-title">Collections &amp; FAQ</div>
+    </div>
+    <div class="content-body">
+      <div class="collections-container" style="margin-top:0; margin-bottom: 0.3in;">
+        <!-- PREMIERE -->
+        <div class="collection-card">
+          <div class="card-header">
+            <h3 class="collection-title">Premiere</h3>
+            <span class="collection-price">$6,000</span>
+          </div>
+          <p style="font-size: 9pt; margin-bottom: 0.15in; font-style: italic;">The full story, beginning to end, with weekend coverage and comprehensive planning support.</p>
+          <ul class="collection-features">
+            <li class="feature-item">Wedding weekend coverage</li>
+            <li class="feature-item">Second photographer</li>
+            <li class="feature-item">2-hour engagement session</li>
+            <li class="feature-item">Comprehensive planning support</li>
+            <li class="feature-item">Online gallery + print release</li>
+            <li class="feature-item">Sneak peeks within 24 hours</li>
+            <li class="feature-item">Full gallery in 35 days</li>
+            <li class="feature-item">Two keepsake flash drives</li>
+          </ul>
+        </div>
+      </div>
+
+      <span class="section-kicker">Information</span>
+      <h1 class="page-title" style="font-size: 20pt; margin-bottom: 0.15in;">Frequently Asked Questions</h1>
+      
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3>Do you offer video too?</h3>
+          <p style="font-size: 9pt; margin-bottom:0;">I do, wedding film is something I love. The one thing I can't do is shoot photo and video at the same wedding (I'm one person, and both deserve my full attention). So if you want both, I'll happily cover one and point you to a trusted partner for the other.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do you travel?</h3>
+          <p style="font-size: 9pt; margin-bottom:0;">Absolutely. I'm based in Des Moines, Iowa, and I love a good destination wedding. Send me your location and I'll take care of the details.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do you carry backup equipment?</h3>
+          <p style="font-size: 9pt; margin-bottom:0;">Always. Multiple cameras, lenses, storage, and backups, so your day is never riding on a single piece of gear.</p>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>Client Guide</div>
+      <div>Page 8</div>
+    </div>
+  </div>
+
+  <!-- PAGE 9: FAQ CONTINUED & CTA -->
+  <div class="page">
+    <div class="page-header">
+      <div class="header-brand">HAUS OF <span>LYRA</span></div>
+      <div class="header-title">Next Steps</div>
+    </div>
+    <div class="content-body">
+      <div class="faq-list" style="margin-top:0; margin-bottom: 0.4in;">
+        <div class="faq-item">
+          <h3>What happens if it rains?</h3>
+          <p style="font-size: 9pt; margin-bottom:0;">Some of my favorite images have happened in bad weather. We adapt, and it's often better for it.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How long until we receive everything?</h3>
+          <p style="font-size: 9pt; margin-bottom:0;">Your sneak peeks come within 24 to 48 hours, and your full gallery is delivered in 35 days.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can we choose the engagement session location?</h3>
+          <p style="font-size: 9pt; margin-bottom:0;">Yes. I'll give you recommendations, and I'm always open to a spot that means something to you. We'll just factor in the light so everything photographs beautifully.</p>
+        </div>
+      </div>
+
+      <span class="section-kicker">Connection</span>
+      <h1 class="page-title" style="font-size: 20pt; margin-bottom: 0.15in;">The Kind of Couples I Work Best With</h1>
+      <p style="font-size: 9.5pt;">
+        The couples who connect most with my work have one thing in common: they care more about moments than perfection. They understand a wedding isn't a photoshoot, it's a celebration. They're not looking for someone to just show up with a camera. They're looking for someone they trust, someone who values people more than poses. If that sounds like you, there's a good chance we're going to get along really well.
+      </p>
+
+      <div class="cta-container">
+        <h2 style="font-family: var(--font-serif); font-size: 14pt; color: #fff; font-weight: 400;">Ready, or just have questions?</h2>
+        <p style="font-size: 9pt; margin-top: 0.05in; margin-bottom: 0;">The next step is easy. Let's talk through your vision.</p>
+        <a href="https://thehausoflyra.com/#inquire" class="cta-btn">Book Your Discovery Call</a>
+        <p style="font-size: 9pt; margin-top: 0.15in; font-style: italic; color: var(--gold);">I can't wait to hear your story.</p>
+      </div>
+    </div>
+    <div class="page-footer">
+      <div>Client Guide</div>
+      <div>Page 9</div>
+    </div>
+  </div>
+
+</body>
+</html>

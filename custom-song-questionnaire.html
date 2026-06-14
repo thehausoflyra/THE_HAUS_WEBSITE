@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Soundtrack of You | Haus of Lyra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#0a0a0b;
+  --dark2:#121214;
+  --dark3:#1e1e22;
+  --gold:#cead6f;
+  --gold-faint:rgba(206,173,111,0.08);
+  --gold-mid:rgba(206,173,111,0.2);
+  --cream:#f4f4f5;
+  --muted:#a1a1aa;
+  --border:rgba(255,255,255,0.06);
+  --border-gold:rgba(206,173,111,0.3);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--dark);
+  color:var(--cream);
+  font-family:'Josefin Sans',sans-serif;
+  font-weight:300;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── STARS BG ── */
+#starfield{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:var(--gold);animation:twinkle var(--d,3s) ease-in-out infinite var(--del,0s)}
+@keyframes twinkle{0%,100%{opacity:0}50%{opacity:var(--op,.4)}}
+
+/* Film Grain Texture */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.012;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ── LAYOUT ── */
+#app{position:relative;z-index:1;min-height:100vh}
+
+/* ── PROGRESS ── */
+#progress-bar{
+  position:fixed;top:0;left:0;height:2px;
+  background:var(--gold);
+  transition:width .4s ease;
+  z-index:100;
+}
+#progress-label{
+  position:fixed;top:12px;right:20px;
+  font-size:10px;letter-spacing:3px;color:var(--muted);
+  z-index:100;text-transform:uppercase;
+}
+#save-indicator{
+  position:fixed;top:12px;left:20px;
+  font-size:10px;letter-spacing:2px;color:var(--gold);
+  z-index:100;opacity:0;transition:opacity .4s;
+}
+
+/* ── SCREENS ── */
+.screen{
+  display:none;min-height:100vh;
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:4rem 2rem;text-align:center;
+}
+.screen.active{display:flex;animation:fadeUp .5s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── CHAPTER HEADER ── */
+.chapter-badge{
+  display:inline-block;
+  border:0.5px solid var(--border-gold);
+  color:var(--gold);font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  padding:6px 18px;border-radius:2px;margin-bottom:2rem;
+}
+.q-num{font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:.75rem;text-transform:uppercase}
+.q-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,4vw,2.4rem);font-weight:300;line-height:1.25;
+  color:var(--cream);margin-bottom:.5rem;max-width:580px;
+}
+.q-sub{font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:2.5rem;text-transform:uppercase}
+
+/* ── INPUTS ── */
+.text-input{
+  background:transparent;border:none;
+  border-bottom:0.5px solid rgba(245,246,243,0.25);
+  color:var(--cream);
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;font-style:italic;
+  width:100%;max-width:520px;padding:.75rem 0;
+  outline:none;text-align:center;margin-bottom:2rem;
+  transition:border-color .2s;
+}
+.text-input:focus{border-bottom-color:var(--gold)}
+.text-input::placeholder{color:rgba(245,246,243,0.2)}
+textarea.text-input{resize:vertical;min-height:80px;text-align:left;padding:.75rem;border:0.5px solid rgba(245,246,243,0.2);border-radius:4px}
+textarea.text-input:focus{border-color:var(--gold)}
+
+/* ── OPTION BUTTONS ── */
+.options-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:10px;width:100%;max-width:540px;margin-bottom:2rem;
+}
+.options-grid.col3{grid-template-columns:repeat(3,1fr)}
+.options-grid.col1{grid-template-columns:1fr}
+.opt-btn{
+  background:transparent;
+  border:0.5px solid var(--border);
+  color:var(--cream);
+  font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:1rem 1.25rem;border-radius:3px;cursor:pointer;
+  transition:all .2s ease;text-align:center;
+}
+.opt-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-faint)}
+.opt-btn.selected{border-color:var(--gold);color:var(--gold);background:var(--gold-faint)}
+
+/* ── NAV ── */
+.nav-row{display:flex;align-items:center;gap:1.5rem;margin-top:1rem}
+.btn-next{
+  background:var(--gold);color:var(--dark);
+  font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  padding:.85rem 2.5rem;border:none;border-radius:2px;cursor:pointer;
+  transition:opacity .2s;font-weight:400;
+}
+.btn-next:hover{opacity:.85}
+.btn-back{
+  background:transparent;border:none;color:var(--muted);
+  font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:color .2s;
+}
+.btn-back:hover{color:var(--cream)}
+
+/* ── INTRO ── */
+.intro-logo{font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:3rem}
+.intro-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,7vw,4.5rem);font-weight:300;line-height:1.05;margin-bottom:1rem}
+.intro-title em{font-style:italic;color:var(--gold)}
+.divider{width:40px;height:1px;background:var(--gold);margin:2rem auto}
+.intro-body{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;color:var(--muted);max-width:480px;line-height:1.8;margin-bottom:.5rem}
+.snack-box{
+  border:0.5px solid var(--border-gold);border-radius:4px;
+  padding:1.25rem 1.75rem;max-width:440px;margin:1.5rem auto 2.5rem;
+  font-size:11px;letter-spacing:1.5px;color:var(--gold);line-height:1.9;text-transform:uppercase;
+  background:var(--gold-faint);
+}
+.snack-box strong{display:block;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:.5rem}
+
+/* ── CHAPTER DIVIDER SCREENS ── */
+.chapter-screen{background:#0e0e10}
+.chapter-num{font-family:'Cormorant Garamond',serif;font-size:clamp(5rem,15vw,10rem);font-weight:300;color:rgba(206,173,111,0.05);line-height:1;position:absolute}
+.chapter-content{position:relative;z-index:1}
+.chapter-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:300;margin-bottom:.5rem}
+.chapter-sub{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:2rem}
+
+/* ── PRIVATE SCREEN ── */
+.private-screen{background:#08080a}
+.private-icon{font-size:3rem;margin-bottom:1.5rem;filter:grayscale(1);opacity:.6}
+.private-title{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;margin-bottom:1rem}
+.private-sub{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;max-width:420px;line-height:2;margin-bottom:2.5rem}
+
+/* ── MINI GAME: WORD BUBBLES ── */
+.word-builder{width:100%;max-width:520px;margin-bottom:2rem}
+.word-bubble-area{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  min-height:60px;padding:1rem;
+  border:0.5px solid var(--border);border-radius:4px;margin-bottom:1rem;
+  background:var(--dark2);
+}
+.word-bubble{
+  border:0.5px solid var(--border-gold);color:var(--gold);
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;cursor:pointer;
+  transition:all .15s;background:var(--gold-faint);
+  animation:popIn .2s ease;
+}
+@keyframes popIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+.word-bubble:hover{background:var(--gold);color:var(--dark)}
+.word-pool{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:.5rem}
+.word-chip{
+  border:0.5px solid var(--border);color:var(--muted);
+  font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .15s;
+}
+.word-chip:hover{border-color:var(--gold);color:var(--gold)}
+.word-chip.used{opacity:.25;pointer-events:none}
+.word-custom-row{display:flex;gap:8px;align-items:center;margin-top:.75rem;justify-content:center}
+.word-custom-input{
+  background:transparent;border-bottom:0.5px solid var(--border);
+  color:var(--cream);font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1px;
+  padding:4px 8px;outline:none;width:150px;text-align:center;
+}
+.word-custom-input:focus{border-bottom-color:var(--gold)}
+.word-add-btn{
+  background:transparent;border:0.5px solid var(--border-gold);color:var(--gold);
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  padding:5px 14px;border-radius:2px;cursor:pointer;transition:all .15s;
+}
+.word-add-btn:hover{background:var(--gold);color:var(--dark)}
+.word-count{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:.5rem}
+
+/* ── MINI GAME: MOOD MAP ── */
+.mood-map-wrap{position:relative;width:280px;height:280px;margin:0 auto 2rem;cursor:crosshair}
+.mood-grid{
+  width:100%;height:100%;border:0.5px solid var(--border);border-radius:4px;
+  position:relative;background:var(--dark2);
+}
+.mood-axis-label{
+  position:absolute;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+}
+.mood-axis-label.top{top:-20px;left:50%;transform:translateX(-50%)}
+.mood-axis-label.bottom{bottom:-20px;left:50%;transform:translateX(-50%)}
+.mood-axis-label.left{left:-50px;top:50%;transform:translateY(-50%) rotate(-90deg);width:80px;text-align:center}
+.mood-axis-label.right{right:-50px;top:50%;transform:translateY(-50%) rotate(90deg);width:80px;text-align:center}
+.mood-line-h,.mood-line-v{position:absolute;background:var(--border)}
+.mood-line-h{top:50%;left:0;right:0;height:0.5px}
+.mood-line-v{left:50%;top:0;bottom:0;width:0.5px}
+.mood-dot{
+  position:absolute;width:14px;height:14px;border-radius:50%;
+  background:var(--gold);transform:translate(-50%,-50%);
+  box-shadow:0 0 0 4px var(--gold-mid);
+  transition:left .1s,top .1s;pointer-events:none;
+  display:none;
+}
+.mood-tag{
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  margin-top:2.5rem;min-height:20px;text-align:center;
+}
+
+/* ── FINAL SCREEN ── */
+.final-stars{display:flex;gap:6px;justify-content:center;margin-bottom:1.5rem}
+.f-star{color:var(--gold);font-size:14px;animation:starPop .4s ease forwards;opacity:0}
+.f-star:nth-child(1){animation-delay:.1s}
+.f-star:nth-child(2){animation-delay:.2s}
+.f-star:nth-child(3){animation-delay:.3s}
+.f-star:nth-child(4){animation-delay:.4s}
+.f-star:nth-child(5){animation-delay:.5s}
+@keyframes starPop{to{opacity:1;transform:scale(1.2)}}
+.final-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,3.5rem);font-weight:300;margin-bottom:1rem}
+.final-sub{font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:1.5rem}
+.final-body{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;color:var(--muted);max-width:420px;line-height:1.8;margin-bottom:2rem}
+.summary-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:480px;margin-bottom:2rem}
+.summary-chip{
+  border:0.5px solid var(--border-gold);color:var(--gold);
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  padding:5px 12px;border-radius:2px;
+}
+.submitting-msg{font-size:11px;letter-spacing:2px;color:var(--muted);margin-top:.75rem}
+.error-msg{font-size:11px;letter-spacing:1.5px;color:#e05c5c;margin-top:.75rem}
+</style>
+</head>
+<body>
+
+<div id="starfield"></div>
+<div class="noise-overlay"></div>
+<div id="progress-bar"></div>
+<div id="progress-label"></div>
+<div id="save-indicator">Progress saved</div>
+
+<div id="app"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const FORMSPREE = 'https://formspree.io/f/xrejbjoz';
+const SAVE_KEY = 'hol_custom_song_q';
+
+const answers = {};
+let currentIdx = 0;
+
+// Screens definition
+// Types: intro | chapter | private | text | textarea | options | words | moodmap | final
+const SCREENS = [
+  // ── INTRO
+  {id:'intro', type:'intro'},
+
+  // ── CHAPTER 1: THE BASICS & SOUNDSCAPES
+  {id:'ch1', type:'chapter', num:'01', title:'Sound & Space', sub:'Setting the stage for your custom score.'},
+  {id:'names', type:'text', chapter:'Sound & Space', q:'What are your full names?', sub:'As they should appear on our files', placeholder:'e.g. Jordan & Taylor Reeves', key:'names'},
+  {id:'date', type:'text', chapter:'Sound & Space', q:'Wedding date and venue location?', sub:'So we can cross-reference your timeline', placeholder:'e.g. June 14, 2026 — Blank Canvas DSM', key:'date'},
+  {id:'childhood_music', type:'textarea', chapter:'Sound & Space', q:'What was the soundtrack of your childhood homes?', sub:'Record collections, car radio drives, or sounds you grew up hearing', placeholder:'My parents always had Motown playing on Sundays, while they grew up on 90s alternative rock...', key:'childhood_music'},
+
+  // ── CHAPTER 2: SUBCONSCIOUS & SENSES (PSYCHOLOGY)
+  {id:'ch2', type:'chapter', num:'02', title:'Subconscious & Senses', sub:'Revealing your vibes beneath the surface.'},
+  {id:'silence_metaphor', type:'options', chapter:'Subconscious & Senses', q:'When you two sit together in complete silence, what does it feel like?', sub:'Pick the closest emotion', key:'silence_metaphor', opts:['Comfortable and heavy','Light and playful','Recharging and quiet','Electric and unspoken']},
+  {id:'sensory_texture', type:'options', chapter:'Subconscious & Senses', q:'If your relationship was a combination of texture and lighting, what would it be?', sub:'Select a vibe', key:'sensory_texture', opts:['Rough linen & warm amber light','Smooth silk & misty morning blue','Warm velvet & deep forest green','Distressed leather & golden hour sun']},
+  {id:'peace_space', type:'textarea', chapter:'Subconscious & Senses', q:'Describe a physical space where you both feel completely at peace.', sub:'What does it sound like? What does it smell like?', placeholder:'A quiet cabin in the woods with rain hitting the roof and the smell of pine...', key:'peace_space'},
+
+  // ── PRIVATE: PARTNER 1
+  {id:'priv1', type:'private', label:'Partner 1', msg:'Time for your private thoughts. Ask your partner to look away or leave the room for a moment.'},
+  {id:'p1_unseen_beauty', type:'textarea', chapter:'Private — Partner 1', q:'What is something beautiful about your partner that nobody else gets to see?', sub:'The private details', placeholder:'I love the quiet way they...', key:'p1_unseen_beauty'},
+  {id:'p1_anchor', type:'textarea', chapter:'Private — Partner 1', q:'In a crowded room, how does your partner make you feel anchored?', sub:'How do they ground you?', placeholder:'A simple look across the table or when they...', key:'p1_anchor'},
+  {id:'p1_unspoken_word', type:'text', chapter:'Private — Partner 1', q:'What is a wordless gesture between you two that has a secret meaning?', sub:'The codes only you understand', placeholder:'When they squeeze my hand three times, it means...', key:'p1_unspoken_word'},
+
+  // ── PRIVATE: PARTNER 2
+  {id:'priv2', type:'private', label:'Partner 2', msg:'Now switch. Partner 1, hand over the screen and take a brief break.'},
+  {id:'p2_unseen_beauty', type:'textarea', chapter:'Private — Partner 2', q:'What is something beautiful about your partner that nobody else gets to see?', sub:'The private details', placeholder:'I love the quiet way they...', key:'p2_unseen_beauty'},
+  {id:'p2_anchor', type:'textarea', chapter:'Private — Partner 2', q:'In a crowded room, how does your partner make you feel anchored?', sub:'How do they ground you?', placeholder:'A simple look across the table or when they...', key:'p2_anchor'},
+  {id:'p2_unspoken_word', type:'text', chapter:'Private — Partner 2', q:'What is a wordless gesture between you two that has a secret meaning?', sub:'The codes only you understand', placeholder:'When they squeeze my hand three times, it means...', key:'p2_unspoken_word'},
+
+  // ── CHAPTER 3: THE CUSTOM SONG BUILDER
+  {id:'ch3', type:'chapter', num:'03', title:'The Custom Song Builder', sub:'Designing your custom music style.'},
+  {id:'vocals_preference', type:'options', chapter:'The Song Builder', q:'Should your custom song have lyrics (vocals) or be instrumental?', sub:'Pick your musical lead', key:'vocals_preference', opts:['Full Vocals (Let the lyrics tell our story)','Instrumental (Let the instruments set the emotion)','Hybrid (A mix of acoustic strings with subtle vocal hums/harmonies)']},
+  {id:'song_rhythm', type:'options', chapter:'The Song Builder', q:'How do you want the music to move?', sub:'Choose the tempo / rhythm profile', key:'song_rhythm', opts:['A slow, romantic sway','A building crescendo (quiet start, epic finish)','An upbeat, celebratory strut','A gentle, acoustic drift']},
+  {id:'lyric_themes', type:'words', chapter:'The Song Builder', q:'Select 3 words that represent the core themes of your custom song.', sub:'These words will guide our songwriters', key:'lyric_themes'},
+  {id:'music_vibe_map', type:'moodmap', chapter:'The Song Builder', q:'Map the emotional canvas of your custom song.', sub:'Click anywhere on the grid to drop your pin', key:'music_vibe_map'},
+  {id:'music_hate', type:'text', chapter:'The Song Builder', q:'Are there any instruments, genres, or tropes you absolutely hate?', sub:'We will keep these completely out of the studio', placeholder:'e.g. No high-pitched synths, no banjos, no cheesy lyrics...', key:'music_hate'},
+
+  // ── CHAPTER 4: THE BIG PICTURE
+  {id:'ch4', type:'chapter', num:'04', title:'The Vision', sub:'Translating the music into a final masterpiece.'},
+  {id:'final_feel', type:'textarea', chapter:'The Vision', q:'When you watch your wedding film 20 years from now, what feeling should the music bring back?', sub:'Take your time with this', placeholder:'We want to feel the goosebumps of the ceremony / We want it to feel warm and nostalgic...', key:'final_feel'},
+
+  // ── FINAL
+  {id:'final', type:'final'}
+];
+
+const TOTAL_Q = SCREENS.filter(s => !['intro','chapter','private','final'].includes(s.type)).length;
+
+// ── UTILS ────────────────────────────────────────────────────────────────────
+function save(){
+  localStorage.setItem(SAVE_KEY, JSON.stringify({answers, currentIdx}));
+  const ind = document.getElementById('save-indicator');
+  ind.style.opacity = '1';
+  clearTimeout(window._saveTimer);
+  window._saveTimer = setTimeout(()=>ind.style.opacity='0', 1800);
+}
+
+function load(){
+  const raw = localStorage.getItem(SAVE_KEY);
+  if(!raw) return;
+  try{
+    const d = JSON.parse(raw);
+    Object.assign(answers, d.answers||{});
+    currentIdx = d.currentIdx||0;
+  }catch(e){}
+}
+
+function countAnswered(){
+  return SCREENS.filter(s=>!['intro','chapter','private','final'].includes(s.type) && answers[s.key] && String(answers[s.key]).trim()).length;
+}
+
+function updateProgress(){
+  const qScreens = SCREENS.filter(s=>!['intro','chapter','private','final'].includes(s.type));
+  const total = qScreens.length;
+  const done = qScreens.filter(s=>answers[s.key] && String(answers[s.key]).trim()).length;
+  const pct = Math.round((currentIdx / (SCREENS.length-1)) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${done} / ${total}`;
+}
+
+// ── STARS ────────────────────────────────────────────────────────────────────
+function buildStars(){
+  const el = document.getElementById('starfield');
+  for(let i=0;i<60;i++){
+    const s = document.createElement('div');
+    s.className='star';
+    const size = Math.random()*2+1;
+    s.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*5}s;--del:${-Math.random()*5}s;--op:${0.2+Math.random()*0.5}`;
+    el.appendChild(s);
+  }
+}
+
+// ── RENDER ───────────────────────────────────────────────────────────────────
+function render(){
+  updateProgress();
+  const s = SCREENS[currentIdx];
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'screen active' + (s.type==='chapter'?' chapter-screen':s.type==='private'?' private-screen':'');
+  div.innerHTML = buildScreen(s);
+  app.appendChild(div);
+  bindScreen(s, div);
+  window.scrollTo(0,0);
+}
+
+function buildScreen(s){
+  switch(s.type){
+    case 'intro': return buildIntro();
+    case 'chapter': return buildChapter(s);
+    case 'private': return buildPrivate(s);
+    case 'text': return buildText(s);
+    case 'textarea': return buildTextarea(s);
+    case 'options': return buildOptions(s);
+    case 'words': return buildWords(s);
+    case 'moodmap': return buildMoodMap(s);
+    case 'final': return buildFinal();
+  }
+}
+
+// INTRO
+function buildIntro(){
+  return `
+    <div class="intro-logo">Haus of Lyra Creative Studios</div>
+    <div class="intro-title">The Soundtrack<br><em>of You.</em></div>
+    <div class="divider"></div>
+    <p class="intro-body">This is your Custom Song Questionnaire. We use these answers, metaphors, and vibes to guide our studio musicians and write a custom track tailored entirely to your wedding film.</p>
+    <div class="snack-box">
+      <strong>Before you begin, a word of advice:</strong>
+      Get your snacks ready. Top off that drink.<br>
+      Maybe light a candle. Put the dog in another room.<br>
+      This one takes a minute — and it's worth every second.
+    </div>
+    <p style="font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:2rem;text-transform:uppercase">Your progress saves automatically. Close and come back anytime.</p>
+    <button class="btn-next" onclick="next()">Let's Begin</button>
+  `;
+}
+
+// CHAPTER
+function buildChapter(s){
+  return `
+    <div class="chapter-num">${s.num}</div>
+    <div class="chapter-content">
+      <div class="chapter-badge">Chapter ${s.num}</div>
+      <div class="chapter-title">${s.title}</div>
+      <div class="chapter-sub">${s.sub}</div>
+      <div class="nav-row" style="justify-content:center">
+        <button class="btn-back" onclick="prev()">Back</button>
+        <button class="btn-next" onclick="next()">Continue</button>
+      </div>
+    </div>
+  `;
+}
+
+// PRIVATE
+function buildPrivate(s){
+  return `
+    <div class="private-icon">🔒</div>
+    <div class="private-title">${s.label}'s Turn</div>
+    <div class="private-sub">${s.msg}<br><br>These answers are private — just for you. No peeking.</div>
+    <div class="nav-row" style="justify-content:center">
+      <button class="btn-back" onclick="prev()">Back</button>
+      <button class="btn-next" onclick="next()">I'm Ready — They've Stepped Away</button>
+    </div>
+  `;
+}
+
+// TEXT
+function buildText(s){
+  const val = answers[s.key]||'';
+  return `
+    <div class="chapter-badge">${s.chapter||''}</div>
+    <div class="q-text">${s.q}</div>
+    <div class="q-sub">${s.sub||''}</div>
+    <input class="text-input" id="qi" type="text" placeholder="${s.placeholder||''}" value="${val.replace(/"/g,'&quot;')}">
+    <div class="nav-row">
+      <button class="btn-back" onclick="prev()">Back</button>
+      <button class="btn-next" onclick="saveText('${s.key}');next()">Continue</button>
+    </div>
+  `;
+}
+
+// TEXTAREA
+function buildTextarea(s){
+  const val = answers[s.key]||'';
+  return `
+    <div class="chapter-badge">${s.chapter||''}</div>
+    <div class="q-text">${s.q}</div>
+    <div class="q-sub">${s.sub||''}</div>
+    <textarea class="text-input" id="qi" placeholder="${s.placeholder||''}" rows="4">${val}</textarea>
+    <div class="nav-row">
+      <button class="btn-back" onclick="prev()">Back</button>
+      <button class="btn-next" onclick="saveText('${s.key}');next()">Continue</button>
+    </div>
+  `;
+}
+
+// OPTIONS
+function buildOptions(s){
+  const val = answers[s.key]||'';
+  const btns = s.opts.map(o=>`<button class="opt-btn${val===o?' selected':''}" onclick="selectOpt(this,'${s.key}','${o.replace(/'/g,"\\'")}')">${o}</button>`).join('');
+  return `
+    <div class="chapter-badge">${s.chapter||''}</div>
+    <div class="q-text">${s.q}</div>
+    <div class="q-sub">${s.sub||''}</div>
+    <div class="options-grid col1">${btns}</div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="prev()">Back</button>
+      <button class="btn-next" onclick="next()">Continue</button>
+    </div>
+  `;
+}
+
+// WORD BUBBLES
+function buildWords(s){
+  const existing = answers[s.key] ? answers[s.key].split(',').map(w=>w.trim()).filter(Boolean) : [];
+  const pool = ['Sanctuary','Gravity','Growth','Adventure','Wild','Sanctuary','Calm','Stillness','Warmth','Tension','Home','Spark','Horizon','Anchor','Glow','Quiet','Storm','Electric','Deep','Playful','Timeless','Sway','Fierce','Loyal','Joy'];
+  const poolHTML = pool.map(w=>`<div class="word-chip${existing.includes(w)?' used':''}" onclick="addWord(this,'${w}')">${w}</div>`).join('');
+  const bubblesHTML = existing.map(w=>`<div class="word-bubble" onclick="removeWord(this,'${w}')">${w} ×</div>`).join('');
+  return `
+    <div class="chapter-badge">${s.chapter||''}</div>
+    <div class="q-text">${s.q}</div>
+    <div class="q-sub">Tap a word to add it. Tap your chosen word to remove it. Max 3.</div>
+    <div class="word-builder">
+      <div class="word-bubble-area" id="bubble-area">${bubblesHTML}</div>
+      <div class="word-count" id="word-count">${existing.length} / 3 selected</div>
+      <div class="word-pool" id="word-pool">${poolHTML}</div>
+      <div class="word-custom-row">
+        <input class="word-custom-input" id="custom-word" placeholder="Your own word..." maxlength="20">
+        <button class="word-add-btn" onclick="addCustomWord()">Add</button>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="prev()">Back</button>
+      <button class="btn-next" onclick="next()">Continue</button>
+    </div>
+  `;
+}
+
+// MOOD MAP
+function buildMoodMap(s){
+  const val = answers[s.key]||'';
+  return `
+    <div class="chapter-badge">${s.chapter||''}</div>
+    <div class="q-text">${s.q}</div>
+    <div class="q-sub">Click the grid to drop a pin. Your position generates a music direction.</div>
+    <div style="margin:1.5rem auto 0;position:relative;width:280px">
+      <div class="mood-axis-label top">Orchestral</div>
+      <div class="mood-axis-label bottom">Acoustic</div>
+      <div class="mood-axis-label left">Melancholy</div>
+      <div class="mood-axis-label right">Uplifting</div>
+      <div class="mood-grid" id="mood-grid" onclick="dropMoodPin(event)">
+        <div class="mood-line-h"></div>
+        <div class="mood-line-v"></div>
+        <div class="mood-dot" id="mood-dot"></div>
+      </div>
+    </div>
+    <div class="mood-tag" id="mood-tag">${val||'Click the grid to place your pin'}</div>
+    <div class="nav-row" style="margin-top:2rem">
+      <button class="btn-back" onclick="prev()">Back</button>
+      <button class="btn-next" onclick="next()">Continue</button>
+    </div>
+  `;
+}
+
+// FINAL
+function buildFinal(){
+  const couple = answers['names']||'you two';
+  const chips = Object.entries(answers).filter(([k,v])=>v&&String(v).trim()&&!k.startsWith('p1_')&&!k.startsWith('p2_')).slice(0,8);
+  const chipsHTML = chips.map(([k,v])=>{
+    const short = String(v).length > 30 ? String(v).substring(0,30)+'...' : v;
+    return `<div class="summary-chip">${short}</div>`;
+  }).join('');
+  return `
+    <div class="final-stars">
+      <span class="f-star">+</span><span class="f-star">+</span><span class="f-star">+</span><span class="f-star">+</span><span class="f-star">+</span>
+    </div>
+    <div class="final-title">That's a wrap,<br><em>${couple}.</em></div>
+    <div class="divider"></div>
+    <p class="final-body">Your answers will help our studio musicians craft the custom score of your dreams. Dakota will review your story and song details soon.</p>
+    <div class="summary-row">${chipsHTML}</div>
+    <p style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:1.5rem">Submit your responses to complete the task</p>
+    <button class="btn-next" id="submit-btn" onclick="submitForm()">Send to Haus of Lyra</button>
+    <div class="submitting-msg" id="submit-msg"></div>
+    <div class="error-msg" id="error-msg"></div>
+  `;
+}
+
+// ── BINDINGS & HELPERS ────────────────────────────────────────────────────────
+function bindScreen(s, div){
+  if(s.type==='moodmap'){
+    // Restore dot if already clicked
+    const val = answers[s.key];
+    if(val && window.lastMoodCoords){
+      setTimeout(()=>{
+        const dot = document.getElementById('mood-dot');
+        if(dot){
+          dot.style.left = (window.lastMoodCoords.x * 100) + '%';
+          dot.style.top = (window.lastMoodCoords.y * 100) + '%';
+          dot.style.display = 'block';
+        }
+      }, 50);
+    }
+  }
+}
+
+// Word bubbles
+function addWord(chip, word){
+  const area = document.getElementById('bubble-area');
+  const current = area.querySelectorAll('.word-bubble').length;
+  if(current >= 3) return;
+  chip.classList.add('used');
+  const b = document.createElement('div');
+  b.className='word-bubble';
+  b.textContent = word + ' ×';
+  b.onclick = ()=>removeWord(b, word);
+  area.appendChild(b);
+  updateWordAnswer();
+}
+function removeWord(bubble, word){
+  bubble.remove();
+  const chips = document.querySelectorAll('.word-chip');
+  chips.forEach(c=>{ if(c.textContent===word) c.classList.remove('used'); });
+  updateWordAnswer();
+}
+function addCustomWord(){
+  const inp = document.getElementById('custom-word');
+  const w = inp.value.trim();
+  if(!w) return;
+  const area = document.getElementById('bubble-area');
+  if(area.querySelectorAll('.word-bubble').length >= 3) return;
+  const b = document.createElement('div');
+  b.className='word-bubble';
+  b.textContent = w + ' ×';
+  b.onclick = ()=>removeWord(b, w);
+  area.appendChild(b);
+  inp.value='';
+  updateWordAnswer();
+}
+function updateWordAnswer(){
+  const area = document.getElementById('bubble-area');
+  const words = [...area.querySelectorAll('.word-bubble')].map(b=>b.textContent.replace(' ×','').trim());
+  const countEl = document.getElementById('word-count');
+  if(countEl) countEl.textContent = words.length + ' / 3 selected';
+  answers['lyric_themes'] = words.join(', ');
+  save();
+}
+
+// Options
+function selectOpt(btn, key, val){
+  btn.closest('.options-grid').querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[key] = val;
+  save();
+}
+
+// Text
+function saveText(key){
+  const el = document.getElementById('qi');
+  if(el){ answers[key] = el.value; save(); }
+}
+
+// Mood map
+function dropMoodPin(e){
+  const grid = document.getElementById('mood-grid');
+  const dot = document.getElementById('mood-dot');
+  const rect = grid.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width;
+  const y = (e.clientY - rect.top) / rect.height;
+  dot.style.left = (x*100)+'%';
+  dot.style.top = (y*100)+'%';
+  dot.style.display='block';
+  window.lastMoodCoords = { x, y };
+
+  const xLabel = x < 0.33 ? 'melancholy' : x < 0.66 ? 'balanced' : 'uplifting';
+  const yLabel = y < 0.33 ? 'orchestral' : y < 0.66 ? 'hybrid-mix' : 'acoustic';
+
+  const tags = {
+    'melancholy-orchestral':'Cinematic Tragedy/Grandeur. Deep classical piano, sweeping violin arcs.',
+    'melancholy-hybrid-mix':'Indie Ambient. Ethereal vocal echoes, layered pad textures.',
+    'melancholy-acoustic':'Quiet Vulnerability. Solitary guitar fingerpicking, raw whispered voice.',
+    'balanced-orchestral':'Classic Wedding Anthem. String quartet swells, rising crescendos.',
+    'balanced-hybrid-mix':'Warm Folk Pop. Modern indie texture, acoustic beats, soaring backing chorus.',
+    'balanced-acoustic':'Intimate Singer-Songwriter. Warm piano chords, present and organic.',
+    'uplifting-orchestral':'Epic Celebratory Score. Soaring brass and massive horn arrays.',
+    'uplifting-hybrid-mix':'Energetic Cinematic Indie. Fast acoustic strumming, drum layers, high peaks.',
+    'uplifting-acoustic':'Sunny Folk. Light acoustic guitar, optimistic rhythm, bright melodies.'
+  };
+
+  const tag = tags[`${xLabel}-${yLabel}`]||'Your vibe is uniquely yours.';
+  const tagEl = document.getElementById('mood-tag');
+  if(tagEl) tagEl.textContent = tag;
+  answers['music_vibe_map'] = `${xLabel} / ${yLabel} — ${tag}`;
+  save();
+}
+
+// ── NAV ──────────────────────────────────────────────────────────────────────
+function next(){
+  // Auto-save any open text input
+  const qi = document.getElementById('qi');
+  if(qi && SCREENS[currentIdx].key){
+    answers[SCREENS[currentIdx].key] = qi.value;
+    save();
+  }
+  if(currentIdx < SCREENS.length-1){
+    currentIdx++;
+    save();
+    render();
+  }
+}
+function prev(){
+  if(currentIdx > 0){
+    currentIdx--;
+    save();
+    render();
+  }
+}
+
+// ── SUBMIT ───────────────────────────────────────────────────────────────────
+async function submitForm(){
+  const btn = document.getElementById('submit-btn');
+  const msg = document.getElementById('submit-msg');
+  const err = document.getElementById('error-msg');
+  btn.disabled=true;
+  btn.textContent='Sending...';
+  msg.textContent='Submitting your answers — hang tight.';
+
+  // Build a readable body
+  const lines = SCREENS
+    .filter(s=>s.key)
+    .map(s=>{
+      const v = answers[s.key];
+      if(!v) return null;
+      return `${s.q}\n${v}`;
+    })
+    .filter(Boolean)
+    .join('\n\n---\n\n');
+
+  const coupleName = answers['names']||'Unknown Couple';
+  const weddingDate = answers['date']||'Date TBD';
+
+  const data = new FormData();
+  data.append('_subject', `Custom Song Questionnaire — ${coupleName}`);
+  data.append('_replyto', 'noreply@thehausoflyra.com');
+  data.append('Couple Names', coupleName);
+  data.append('Wedding Date', weddingDate);
+  data.append('Full Questionnaire', lines);
+
+  try{
+    const res = await fetch(FORMSPREE, {method:'POST', body:data, headers:{Accept:'application/json'}});
+    if(res.ok){
+      btn.style.display='none';
+      msg.style.color='var(--gold)';
+      msg.textContent='Submitted. We\'ll review your song ideas soon!';
+      localStorage.removeItem(SAVE_KEY);
+    } else {
+      throw new Error('Server error');
+    }
+  } catch(e){
+    btn.disabled=false;
+    btn.textContent='Try Again';
+    msg.textContent='';
+    err.textContent='Something went wrong. Try again or email hello@thehausoflyra.com directly.';
+  }
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+buildStars();
+load();
+render();
+</script>
+</body>
+</html>

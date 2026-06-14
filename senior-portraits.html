@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Senior Portraits | Haus of Lyra | Des Moines, Iowa</title>
+  <meta name="description" content="Artistic, cinematic, and modern senior portraits in Des Moines, Iowa by Haus of Lyra. Custom tailored, authentic photography.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Tighter section padding for senior page */
+    .senior-theme .section {
+      padding: 4.5rem 0;
+    }
+    @media (max-width: 767px) {
+      .senior-theme .section {
+        padding: 3rem 0;
+      }
+    }
+
+    /* Senior page mobile hero fix */
+    @media (max-width: 767px) {
+      .senior-hero-grid {
+        display: flex !important;
+        flex-direction: column;
+      }
+      .senior-hero-img {
+        order: -1;
+        overflow: hidden;
+        border-radius: var(--radius);
+      }
+      .senior-hero-img img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        object-position: top;
+      }
+    }
+
+    /* Gallery grid */
+    .senior-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    @media (min-width: 768px) {
+      .senior-gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+    }
+    .senior-gallery-grid img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      display: block;
+    }
+    @media (min-width: 768px) {
+      .senior-gallery-grid img {
+        height: 340px;
+      }
+    }
+  </style>
+</head>
+<body class="senior-theme">
+
+  <!-- Film Grain Overlay -->
+  <div class="noise-overlay"></div>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar-inner">
+      <a href="/home/" class="brand">HAUS OF <span>LYRA</span></a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/wedding-photography/">Wedding Photography</a></li>
+        <li><a href="/wedding-films/">Wedding Films</a></li>
+        <li><a href="/senior-portraits/" class="active">Senior Portraits</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" style="cursor: default;">More ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/vendors/">Favorite Vendors</a></li>
+            <li><a href="/hot-takes/">Blog</a></li>
+          </ul>
+        </li>
+      </ul>
+      <a href="#inquire" class="nav-btn">Inquire</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <header class="hero" style="min-height: 85vh; padding-bottom: 4rem;">
+    <div class="senior-hero-bg"></div>
+    <div class="container" style="position: relative; z-index: 2;">
+      <div class="grid grid-2 senior-hero-grid" style="align-items: center; text-align: left;">
+        <div class="senior-hero-text">
+          <span class="hero-kicker">This Is Your Year</span>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1.5rem; line-height: 1.15;">Senior portraits built <span style="color: var(--gold);">around you</span>.</h1>
+          <p class="hero-description" style="font-size: 1.1rem; margin-bottom: 2rem;">
+            Senior year is a wild transition. You're standing right on the line between who you've been and exactly who you're about to become. Everything feels exciting, a little terrifying, and completely full of possibility.
+          </p>
+          <p class="editorial-statement" style="font-size: 1.3rem; margin-bottom: 2rem;">
+            I'm here to capture the energy, the style, and the confidence you're carrying into your next chapter.
+          </p>
+          <a href="#investment" class="btn btn-primary" style="margin-top: 1rem;">View Packages</a>
+        </div>
+        <div class="editorial-img-wrap senior-hero-img">
+          <img src="/senior-pictures/30.png" alt="Senior Portrait Session" class="editorial-img">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- GALLERY -->
+  <section class="section section-darker">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <span class="section-kicker">The Gallery</span>
+        <h2 class="section-title">Zero templates. Zero awkward poses.</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">
+          I build the session entirely around you — whether you're an artist, athlete, musician, or just want photos that actually look like you.
+        </p>
+      </div>
+
+      <div class="senior-gallery-grid">
+        <img src="/senior-pictures/31.png" alt="Senior Portrait Close Up">
+        <img src="/senior-pictures/32.png" alt="Senior Outdoor Session">
+        <img src="/senior-pictures/33.png" alt="Senior Urban Session">
+        <img src="/senior-pictures/34.png" alt="Senior Artistic Vibe">
+        <img src="/senior-pictures/35.png" alt="Senior Moody Portrait">
+        <img src="/senior-pictures/38.png" alt="Senior Adventure Session">
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE COPY -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2" style="align-items: center; gap: 4rem;">
+        <div>
+          <span class="section-kicker">The Experience</span>
+          <h2 class="section-title" style="margin-bottom: 1.5rem;">This isn't a cookie-cutter session.</h2>
+          <p style="line-height: 1.9; margin-bottom: 1.5rem;">
+            Before we ever pick up a camera, we talk. About you — your personality, your style, where you feel most like yourself. We work together to choose locations that make sense for who you are, not just wherever happens to be trendy right now.
+          </p>
+          <p style="line-height: 1.9; margin-bottom: 1.5rem;">
+            On session day, I'm not handing you a list of poses to run through. I'm watching for the moments between poses — the laugh you can't hold back, the way you carry yourself when you forget the camera is there, the expression that actually looks like you. That's where the best photos live.
+          </p>
+          <p style="line-height: 1.9;">
+            Your gallery is delivered within two to three weeks through a private online gallery. High resolution. No watermarks. Ready to download, share, and print.
+          </p>
+        </div>
+        <div>
+          <img src="/senior-pictures/49.png" alt="Senior Session" class="about-image-inline" style="height: 460px; object-fit: cover; object-position: top; max-height: none; width: 100%;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COPY: WHAT MAKES IT DIFFERENT -->
+  <section class="section section-darker">
+    <div class="container" style="max-width: 800px; margin: 0 auto; text-align: center;">
+      <span class="section-kicker">Built Different</span>
+      <h2 class="section-title" style="margin-bottom: 1.5rem;">Sessions tailored to your personality, not a template.</h2>
+      <p style="line-height: 1.9; font-size: 1.05rem; margin-bottom: 1.5rem;">
+        I've spent more than a decade studying how light, composition, and styling come together to tell a story. Senior sessions aren't a side offering — they're a craft I've spent years refining. Every client gets a custom consultation, a thoughtfully planned session, and a final gallery that looks like art, not a yearbook package.
+      </p>
+      <p style="line-height: 1.9; font-size: 1.05rem; margin-bottom: 2.5rem;">
+        Based in Des Moines, Iowa, I work across the metro and surrounding areas. Whether you want urban backdrops, golden-hour fields, or something in between — we'll find the right setting for your story.
+      </p>
+      <a href="#investment" class="btn btn-primary">See What's Included</a>
+    </div>
+  </section>
+
+  <!-- INVESTMENT / PRICING -->
+  <section class="section" id="investment">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 5rem;">
+        <span class="section-kicker">Senior Pricing</span>
+        <h2 class="section-title">Senior Collections</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">Packages built for your milestones</p>
+      </div>
+
+      <div class="investment-grid">
+        <!-- Base -->
+        <div class="price-card">
+          <span class="price-kicker">Collection One</span>
+          <h3 class="price-title">The Classic</h3>
+          <div class="price-amount">$500</div>
+          <ul class="price-features">
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              1-hour session
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              50+ professionally edited images
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              No outfit limits
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Online gallery
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Print release
+            </li>
+          </ul>
+          <a href="#inquire" class="btn btn-outline">Book The Classic</a>
+        </div>
+
+        <!-- Mid -->
+        <div class="price-card price-card-featured">
+          <span class="price-badge">Most Popular</span>
+          <span class="price-kicker">Collection Two</span>
+          <h3 class="price-title">The Full Story</h3>
+          <div class="price-amount">$750</div>
+          <ul class="price-features">
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              2-hour session
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              75+ professionally edited images
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              No outfit limits
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Online gallery
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Print release
+            </li>
+          </ul>
+          <a href="#inquire" class="btn btn-primary">Book The Full Story</a>
+        </div>
+
+        <!-- Top -->
+        <div class="price-card">
+          <span class="price-kicker">Collection Three</span>
+          <h3 class="price-title">The Legacy</h3>
+          <div class="price-amount">$1,200</div>
+          <ul class="price-features">
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Up to 3 hours of shooting
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              100+ professionally edited images
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Multiple locations
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              No outfit limits
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Cinematic social media video reel
+            </li>
+            <li class="price-feature-item">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Online gallery &amp; print release
+            </li>
+          </ul>
+          <a href="#inquire" class="btn btn-outline">Book The Legacy</a>
+        </div>
+      </div>
+
+      <p style="text-align: center; font-style: italic; margin-top: 3rem; color: var(--muted-foreground);">
+        Hair and makeup are available as an add-on.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA & INQUIRY FORM -->
+  <section class="section section-darker" id="inquire">
+    <div class="container">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 4rem;">
+        <span class="section-kicker" style="color: var(--silver);">Ready to Document</span>
+        <h2 class="section-title">Before you turn the page.</h2>
+        <p style="line-height: 1.8; font-size: 1.1rem; margin-bottom: 2rem;">
+          Years from now, these images will be a time capsule of who you were right before life took you in a hundred different directions. Before the moves, the careers, and the next big chapters.
+        </p>
+        <p class="editorial-statement" style="border: none; padding-left: 0; text-align: center;">
+          This is the season where your story is wide open. Let's capture it before the next chapter starts.
+        </p>
+      </div>
+
+        <p style="margin-bottom: 2rem; color: var(--muted-foreground); line-height: 1.8; text-align: center;">
+          Ready to book your senior portrait session? Click below to open the booking inquiry form.
+        </p>
+        <a href="#inquire" class="btn btn-primary" data-action="inquire" style="display: flex; max-width: 300px; margin: 0 auto; text-align: center; justify-content: center;">Open Inquiry Form</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">HAUS OF <span>LYRA</span></div>
+      <p class="footer-kicker">Des Moines, Iowa</p>
+      <p class="footer-copy">&copy; 2026 Haus of Lyra. All rights reserved. | <a href="/privacy-policy/" style="text-decoration: underline; color: rgba(255, 255, 255, 0.45);">Privacy Policy</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(5, 5, 6, 0.85)';
+        navbar.style.height = '80px';
+      } else {
+        navbar.style.background = 'rgba(5, 5, 6, 0.4)';
+        navbar.style.height = '90px';
+      }
+    });
+
+    // Mobile Menu Controller
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('open');
+        navLinks.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+      });
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('open');
+          navLinks.classList.remove('open');
+          document.body.classList.remove('menu-open');
+        });
+      });
+    }
+
+    // Form Submission Logic
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('submitBtn');
+      const formMsg = document.getElementById('formMsg');
+
+      formMsg.className = 'form-msg';
+      formMsg.textContent = '';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      const payload = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        subject: "Senior Portraits Booking: " + (document.getElementById('subject').value || 'Booking'),
+        message: document.getElementById('message').value
+      };
+
+      fetch('/wp-json/haus/v1/contact-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(res => {
+        if (!res.ok) {
+          return res.json().then(err => { throw new Error(err.message || 'Error sending message.') });
+        }
+        return res.json();
+      })
+      .then(data => {
+        formMsg.classList.add('form-msg-success');
+        formMsg.textContent = data.message || 'Your booking request has been submitted successfully!';
+        document.getElementById('contactForm').reset();
+      })
+      .catch(err => {
+        formMsg.classList.add('form-msg-error');
+        formMsg.textContent = err.message || 'Failed to submit booking request. Please try again or email thehausoflyra@gmail.com directly.';
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Book Your Session';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meet Dakota | Haus of Lyra | Des Moines, Iowa</title>
+  <meta name="description" content="Meet Dakota, the storyteller behind Haus of Lyra. Offering intentional, artistic photography and filmmaking services in Des Moines, Iowa.">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Embedded Star Animation CSS -->
+  <style>
+    /* ====================================
+       STAR FIELD ANIMATION - HAUS OF LYRA
+       Medium intensity with shooting stars
+       ==================================== */
+
+    /* Star field container */
+    .star-field {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1; /* Behind content but above background */
+      overflow: hidden;
+    }
+
+    /* Base star styles */
+    .star {
+      position: absolute;
+      background: #CEAD6F;
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    /* Small stars */
+    .star.small {
+      width: 1px;
+      height: 1px;
+      animation: twinkle-small 4s ease-in-out infinite;
+    }
+
+    /* Medium stars */
+    .star.medium {
+      width: 2px;
+      height: 2px;
+      animation: twinkle-medium 5s ease-in-out infinite;
+    }
+
+    /* Bright stars */
+    .star.bright {
+      width: 3px;
+      height: 3px;
+      box-shadow: 0 0 4px rgba(206, 173, 111, 0.6);
+      animation: twinkle-bright 6s ease-in-out infinite;
+    }
+
+    /* Constellation stars (5 main brand pillar stars) */
+    .star.constellation {
+      width: 4px;
+      height: 4px;
+      box-shadow: 0 0 8px rgba(206, 173, 111, 0.8), 0 0 12px rgba(206, 173, 111, 0.4);
+      animation: pulse-constellation 8s ease-in-out infinite;
+    }
+
+    /* Twinkling animations */
+    @keyframes twinkle-small {
+      0%, 100% { opacity: 0.1; }
+      20% { opacity: 0.8; }
+      40% { opacity: 0.3; }
+      60% { opacity: 0.9; }
+      80% { opacity: 0.2; }
+    }
+
+    @keyframes twinkle-medium {
+      0%, 100% { opacity: 0.2; }
+      25% { opacity: 0.7; }
+      50% { opacity: 0.4; }
+      75% { opacity: 0.9; }
+    }
+
+    @keyframes twinkle-bright {
+      0%, 100% { 
+        opacity: 0.4; 
+        transform: scale(0.8);
+      }
+      50% { 
+        opacity: 1; 
+        transform: scale(1.2);
+      }
+    }
+
+    @keyframes pulse-constellation {
+      0%, 100% { 
+        opacity: 0.7; 
+        transform: scale(1);
+      }
+      33% { 
+        opacity: 1; 
+        transform: scale(1.1);
+      }
+      66% { 
+        opacity: 0.8; 
+        transform: scale(0.9);
+      }
+    }
+
+    /* Shooting stars */
+    .shooting-star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: linear-gradient(45deg, #CEAD6F, transparent);
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .shooting-star::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(to left, #CEAD6F, transparent);
+      transform: translateX(100%) rotateZ(45deg);
+      border-radius: 100px;
+      animation: shooting-tail 3s ease-out;
+    }
+
+    @keyframes shooting-star-move {
+      0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) scale(0);
+      }
+      10% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+      }
+      90% {
+        opacity: 1;
+        transform: translateX(300px) translateY(300px) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(400px) translateY(400px) scale(0);
+      }
+    }
+
+    @keyframes shooting-tail {
+      0% {
+        width: 0;
+      }
+      30% {
+        width: 100px;
+      }
+      100% {
+        width: 0;
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .star.constellation {
+        width: 3px;
+        height: 3px;
+        box-shadow: 0 0 6px rgba(206, 173, 111, 0.6);
+      }
+      
+      .star.bright {
+        width: 2px;
+        height: 2px;
+        box-shadow: 0 0 3px rgba(206, 173, 111, 0.5);
+      }
+    }
+
+    /* Reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .star, .shooting-star {
+        animation: none !important;
+      }
+      
+      .star {
+        opacity: 0.3 !important;
+      }
+      
+      .star.constellation {
+        opacity: 0.6 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Film Grain Overlay -->
+  <div class="noise-overlay"></div>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar-inner">
+      <a href="/home/" class="brand">HAUS OF <span>LYRA</span></a>
+      
+      <!-- Mobile Menu Toggle -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/about/" class="active">About</a></li>
+        <li><a href="/wedding-photography/">Wedding Photography</a></li>
+        <li><a href="/wedding-films/">Wedding Films</a></li>
+        <li><a href="/senior-portraits/">Senior Portraits</a></li>
+      </ul>
+      <a href="#inquire" class="nav-btn">Inquire</a>
+    </div>
+  </nav>
+
+  <!-- ABOUT HERO / STORY -->
+  <section class="section about-section" style="padding-top: 120px;">
+    <div class="container">
+      
+      <!-- Part 1: Intro & Portrait -->
+      <div class="grid grid-2" style="align-items: flex-start; margin-bottom: 5rem;">
+        <div>
+          <span class="section-kicker">Meet Dakota</span>
+          <h1 class="section-title" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); margin-bottom: 1.5rem;">I've always believed that the best stories aren't found in movies, books, or songs.</h1>
+          <p class="editorial-statement" style="font-size: 1.25rem; margin-top: 1rem; margin-bottom: 1.5rem;">
+            They're found in people.
+          </p>
+          <p>
+            They're found in the nervous excitement before a wedding ceremony. The confidence of a senior standing on the edge of a brand-new chapter. The quiet moments between family members that often mean more than the big ones. They're found in the moments that make up a life.
+          </p>
+        </div>
+        <div>
+          <img src="https://thehausoflyra.com/wp-content/uploads/2026/06/IMG_6223.jpg" alt="Dakota Portrait" class="about-image-inline">
+        </div>
+      </div>
+
+      <!-- Part 2: Background & Camera Experience -->
+      <div class="grid grid-2 grid-reversed" style="align-items: flex-start; margin-bottom: 5rem;">
+        <div>
+          <p>
+            Born and raised in Iowa, I've always been fascinated by those moments and the stories behind them. That fascination has shaped nearly every creative path I've pursued throughout my life. Photography, filmmaking, songwriting, marketing, design, and branding may seem like different worlds, but to me they've always been connected by one thing: storytelling.
+          </p>
+          <p>
+            While Haus of Lyra is new, my experience behind the camera isn't. I've been photographing people since 2012 and creating video content since 2015. For years, photography and filmmaking lived alongside a full-time career that kept me busy helping businesses grow, build their brands, and connect with their audiences. Over the last decade, I've worked in a variety of roles throughout the retail industry, spending much of that time in business development, marketing, and creative leadership. But I was also living in both worlds: over the last six-plus years, I've quietly been on the ground shooting 25 to 30-plus weddings a year for another company, sharpening my technical skills in the highest-stakes environments.
+          </p>
+        </div>
+        <div>
+          <img src="https://thehausoflyra.com/wp-content/uploads/2026/06/IMG_4105.jpg" alt="Dakota Behind the Camera" class="about-image-inline">
+        </div>
+      </div>
+
+      <!-- Part 3: Commercial Career -->
+      <div class="grid grid-2" style="align-items: flex-start; margin-bottom: 5rem;">
+        <div>
+          <p>
+            That career and deep field experience gave me opportunities that many photographers never experience. I was fortunate enough to be involved in commercial photoshoots, video productions, styling, visual merchandising, advertising campaigns, and large-scale brand storytelling projects, all while consistently managing the fast-paced, unscripted energy of dozens of wedding days year after year. I learned how color influences emotion, how styling changes perception, how composition guides attention, and how every detail within a frame contributes to the story being told.
+          </p>
+          <p>
+            Today, I bring that same perspective into every wedding, senior session, and film I create. I don't just look for beautiful images. I look for meaningful ones. Images that feel intentional. Images that evoke emotion. Images that tell a story long after the moment itself has passed.
+          </p>
+        </div>
+        <div>
+          <img src="https://thehausoflyra.com/wp-content/uploads/2026/06/010A3208-C726-4046-BAB5-4351A48C5A2A.png" alt="Dakota Working" class="about-image-inline">
+        </div>
+      </div>
+
+      <!-- Part 4: The Leap + Brand Name & Outside the Camera -->
+      <div style="max-width: 760px; margin: 0 auto 5rem; text-align: center;">
+        <div style="width: 60px; height: 1px; background: var(--gold); margin: 0 auto 3rem;"></div>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.75rem;">
+          For more than a decade, I've helped businesses tell their stories. I've built brands, directed creative projects, developed marketing campaigns, and spent years helping other people bring their visions to life. But eventually I realized something. I was spending so much time helping others pursue their dreams that I had never fully pursued one of my own. So in 2026, I took the leap. After years of creating for other companies, shooting hundreds of weddings under other names, and building other brands, I launched Haus of Lyra—a creative studio built around everything I've learned throughout my journey and everything I love about storytelling.
+        </p>
+        <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.75rem;">
+          The name comes from the Lyra constellation, the celestial harp of Orpheus in Greek mythology. To represent the brand, I have taken the five brightest stars of the Lyra constellation and given each of them a meaning as my core brand pillars: Intentionality, Creativity, Connection, Artistry, and Storytelling. These pillars guide how I approach every client, every session, and every story entrusted to me.
+        </p>
+        <p style="font-size: 1.05rem; line-height: 1.8;">
+          When I'm not behind the camera, you'll usually find me spending time with my two cats, Smokey and Storm, or chasing another creative outlet. I'm an avid songwriter who loves the challenge of turning emotions, experiences, and memories into something people can connect with. In many ways, songwriting and photography aren't all that different. Both are attempts to preserve a feeling before it slips away.
+        </p>
+      </div>
+
+      <!-- Cats Grid Section -->
+      <div class="cat-grid" style="margin-bottom: 5rem;">
+        <!-- Smokey -->
+        <div class="cat-card">
+          <div class="cat-img-wrap">
+            <img src="https://thehausoflyra.com/wp-content/uploads/2026/06/Smokey.png" alt="Smokey the Cat" class="cat-img">
+          </div>
+          <h3 class="cat-name">Smokey</h3>
+          <span class="cat-role">Chief Napping Officer</span>
+          <p class="cat-desc">
+            Sleeping through work hours, interrupting high-priority editing sessions, and demanding snacks.
+          </p>
+        </div>
+
+        <!-- Storm -->
+        <div class="cat-card">
+          <div class="cat-img-wrap">
+            <img src="https://thehausoflyra.com/wp-content/uploads/2026/06/Storm.png" alt="Storm the Cat" class="cat-img">
+          </div>
+          <h3 class="cat-name">Storm</h3>
+          <span class="cat-role">Moral Support Lead</span>
+          <p class="cat-desc">
+            Desk warming, knocking pens down, and providing support only when convenient.
+          </p>
+        </div>
+      </div>
+
+      <!-- Part 5: Family & Being an Uncle -->
+      <div class="grid grid-2 grid-reversed" style="align-items: flex-start; margin-bottom: 4rem;">
+        <div>
+          <p>
+            Beyond that, one of my favorite roles in life is being an uncle. My niece and nephew remind me constantly how quickly life moves and how important it is to document the moments that matter. The photos and videos we create today become the memories we hold onto tomorrow.
+          </p>
+          <p>
+            That's ultimately why I do this. Not to create pictures that simply look good. Not to follow trends. Not to manufacture moments. I do it to preserve stories. The real ones. The messy, beautiful, emotional, once-in-a-lifetime moments that deserve to be remembered exactly as they felt. Because your story deserves more than documentation. It deserves to become art.
+          </p>
+        </div>
+        <div>
+          <img src="https://thehausoflyra.com/wp-content/uploads/2026/06/IMG_2623.jpg" alt="Dakota and Nephew" class="about-image-inline">
+        </div>
+      </div></div>
+  </section>
+
+  <!-- SPOTIFY ALBUMS -->
+  <section class="section" style="padding-top: 2rem; padding-bottom: 4rem;">
+    <div class="container grid grid-3" style="gap: 1.5rem;">
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/4CWPEG9AHEULfj3xXBXGE7?utm_source=generator&theme=0&si=4b6ab49b82984e85" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/6dwsgBg01slYEtULEG7rCc?utm_source=generator&theme=0&si=5ef9dc2b4fc54d67" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/album/6nyAjiybVzjam8LIqm66ED?utm_source=generator&theme=0&si=2a951c603f1b466b" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">HAUS OF <span>LYRA</span></div>
+      <p class="footer-kicker">Des Moines, Iowa</p>
+      <p class="footer-copy">&copy; 2026 Haus of Lyra. All rights reserved. | <a href="/privacy-policy/" style="text-decoration: underline; color: rgba(255, 255, 255, 0.45);">Privacy Policy</a></p>
+    </div>
+  </footer>
+
+  <!-- Embedded Star Animation JavaScript -->
+  <script>
+    /*
+     * Haus of Lyra - Star Field Animation Script
+     * Creates a beautiful starfield with constellation stars and shooting stars
+     */
+
+    class StarField {
+      constructor() {
+        this.container = null;
+        this.stars = [];
+        this.shootingStars = [];
+        this.init();
+      }
+
+      init() {
+        this.createContainer();
+        this.generateStars();
+        this.generateConstellationStars();
+        this.startShootingStars();
+      }
+
+      createContainer() {
+        this.container = document.createElement('div');
+        this.container.className = 'star-field';
+        document.body.appendChild(this.container);
+      }
+
+      generateStars() {
+        const starCounts = {
+          small: 150,   // Lots of tiny twinkling stars
+          medium: 75,   // Medium brightness stars
+          bright: 25    // Fewer bright stars with glow
+        };
+
+        Object.entries(starCounts).forEach(([type, count]) => {
+          for (let i = 0; i < count; i++) {
+            this.createStar(type);
+          }
+        });
+      }
+
+      createStar(type) {
+        const star = document.createElement('div');
+        star.className = `star ${type}`;
+        
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        
+        // Randomize animation delay for natural twinkling
+        const delay = Math.random() * 8;
+        star.style.animationDelay = `${delay}s`;
+        
+        this.container.appendChild(star);
+        this.stars.push(star);
+      }
+
+      generateConstellationStars() {
+        // 5 constellation stars representing the 5 brand pillars
+        // Positioned to loosely resemble Lyra constellation
+        const constellationPositions = [
+          { x: 25, y: 20, name: 'Intentionality' },    // Vega (brightest)
+          { x: 35, y: 35, name: 'Creativity' },        // Sheliak
+          { x: 45, y: 25, name: 'Connection' },        // Sulafat
+          { x: 55, y: 40, name: 'Artistry' },         // Delta Lyrae
+          { x: 30, y: 45, name: 'Storytelling' }      // Zeta Lyrae
+        ];
+
+        constellationPositions.forEach((pos, index) => {
+          const star = document.createElement('div');
+          star.className = 'star constellation';
+          star.style.left = `${pos.x}%`;
+          star.style.top = `${pos.y}%`;
+          star.style.animationDelay = `${index * 1.6}s`;
+          star.title = pos.name; // Tooltip with brand pillar name
+          
+          this.container.appendChild(star);
+        });
+      }
+
+      createShootingStar() {
+        const shootingStar = document.createElement('div');
+        shootingStar.className = 'shooting-star';
+        
+        // Random starting position (usually from top-left quadrant)
+        const startX = Math.random() * 30; // Start from left 30%
+        const startY = Math.random() * 30; // Start from top 30%
+        
+        shootingStar.style.left = `${startX}%`;
+        shootingStar.style.top = `${startY}%`;
+        
+        // Animation duration between 2-4 seconds
+        const duration = 2 + Math.random() * 2;
+        shootingStar.style.animation = `shooting-star-move ${duration}s ease-out forwards`;
+        
+        this.container.appendChild(shootingStar);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+          if (shootingStar.parentNode) {
+            shootingStar.parentNode.removeChild(shootingStar);
+          }
+        }, duration * 1000);
+      }
+
+      startShootingStars() {
+        // Create a shooting star every 8-15 seconds
+        const scheduleNext = () => {
+          const delay = 8000 + Math.random() * 7000; // 8-15 seconds
+          setTimeout(() => {
+            this.createShootingStar();
+            scheduleNext();
+          }, delay);
+        };
+        
+        // First shooting star after 5 seconds
+        setTimeout(() => {
+          this.createShootingStar();
+          scheduleNext();
+        }, 5000);
+      }
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      if (!prefersReducedMotion) {
+        new StarField();
+      } else {
+        // Create static stars for accessibility
+        const container = document.createElement('div');
+        container.className = 'star-field';
+        document.body.appendChild(container);
+        
+        // Just a few static constellation stars
+        const positions = [
+          { x: 25, y: 20 }, { x: 35, y: 35 }, { x: 45, y: 25 }, 
+          { x: 55, y: 40 }, { x: 30, y: 45 }
+        ];
+        
+        positions.forEach(pos => {
+          const star = document.createElement('div');
+          star.className = 'star constellation';
+          star.style.left = `${pos.x}%`;
+          star.style.top = `${pos.y}%`;
+          star.style.opacity = '0.6';
+          container.appendChild(star);
+        });
+      }
+    });
+
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(5, 5, 6, 0.85)';
+        navbar.style.height = '80px';
+      } else {
+        navbar.style.background = 'rgba(5, 5, 6, 0.4)';
+        navbar.style.height = '90px';
+      }
+    });
+
+    // Mobile Menu Controller
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('open');
+        navLinks.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+      });
+      // Close menu when links are clicked
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('open');
+          navLinks.classList.remove('open');
+          document.body.classList.remove('menu-open');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

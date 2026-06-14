@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Timeline Builder &amp; Shot List Generator | Haus of Lyra</title>
+  <meta name="description" content="Design and customize your wedding day timeline and family shot list. Get instant feedback on travel times and photo schedules.">
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    :root {
+      --accent-silver: #e2e8f0;
+      --card-bg-solid: #121214;
+      --input-bg: rgba(255, 255, 255, 0.03);
+      --input-border: rgba(255, 255, 255, 0.08);
+      --input-focus: rgba(255, 255, 255, 0.2);
+      --warning-color: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.08);
+      --warning-border: rgba(245, 158, 11, 0.25);
+      --success-color: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.08);
+      --success-border: rgba(16, 185, 129, 0.25);
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+    }
+
+    /* Main Container & Layout */
+    .builder-section {
+      padding: 120px 0 8rem;
+    }
+
+    .builder-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (min-width: 1024px) {
+      .builder-grid {
+        grid-template-columns: 3.5fr 2fr;
+      }
+    }
+
+    /* Card styling */
+    .builder-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      margin-bottom: 2rem;
+    }
+
+    .builder-card-title {
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-subtitle {
+      font-size: 0.9rem;
+      color: var(--muted-foreground);
+      margin-top: -1rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    /* Form controls */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .form-row-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .form-row-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-field label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--silver);
+    }
+
+    .form-field input, 
+    .form-field select, 
+    .form-field textarea {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: #fff;
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .form-field input:focus, 
+    .form-field select:focus, 
+    .form-field textarea:focus {
+      outline: none;
+      border-color: var(--silver);
+      box-shadow: 0 0 0 2px var(--input-focus);
+    }
+
+    .form-field input[type="time"] {
+      color-scheme: dark;
+    }
+
+    /* Address Field with API lookup */
+    .address-input-wrapper {
+      position: relative;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-search {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--input-border);
+      color: var(--silver);
+      border-radius: var(--radius);
+      padding: 0 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-search:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .address-status {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-top: 0.25rem;
+      min-height: 18px;
+    }
+
+    .address-status.verified {
+      color: var(--success-color);
+    }
+
+    /* Auto-save notification */
+    .save-indicator {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .save-indicator::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--success-color);
+      border-radius: 50%;
+    }
+
+    /* Milestone Builder */
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .milestone-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .milestone-item {
+        grid-template-columns: 100px 180px 1.5fr 1fr auto;
+        align-items: center;
+      }
+    }
+
+    .milestone-time-inputs {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .milestone-time-inputs input {
+      padding: 0.4rem 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .milestone-select select {
+      padding: 0.4rem 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .milestone-note textarea {
+      padding: 0.4rem 0.5rem;
+      font-size: 0.85rem;
+      resize: vertical;
+      height: 38px;
+    }
+
+    .btn-delete-milestone {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+      padding: 0.5rem;
+    }
+
+    .btn-delete-milestone:hover {
+      opacity: 1;
+    }
+
+    .btn-add-milestone {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px dashed var(--input-border);
+      color: var(--silver);
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-add-milestone:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--silver);
+      color: #fff;
+    }
+
+    /* Shot List Checker */
+    .shot-list-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .shot-list-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .shot-checkbox-card {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .shot-checkbox-card:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .shot-header-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+
+    .shot-checkbox-card input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 0.15rem;
+      accent-color: var(--silver);
+      cursor: pointer;
+    }
+
+    .shot-label-text {
+      font-size: 0.95rem;
+      color: #fff;
+      font-weight: 400;
+    }
+
+    .shot-label-desc {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      display: block;
+      margin-top: 0.15rem;
+    }
+
+    .shot-names-input {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .shot-checkbox-card.active {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .shot-checkbox-card.active .shot-names-input {
+      display: block;
+    }
+
+    .shot-names-input input {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius);
+      padding: 0.5rem 0.75rem;
+      color: #fff;
+      font-size: 0.85rem;
+      width: 100%;
+    }
+
+    .shot-names-input input:focus {
+      outline: none;
+      border-color: var(--silver);
+    }
+
+    /* Custom Shot adder */
+    .custom-shots-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .custom-shot-item {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .custom-shot-item input {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      padding: 0.6rem 0.75rem;
+      color: #fff;
+      font-size: 0.9rem;
+      border-radius: var(--radius);
+    }
+
+    .custom-shot-item .custom-shot-group {
+      flex: 1;
+    }
+
+    .custom-shot-item .custom-shot-names {
+      flex: 2;
+    }
+
+    /* Travel Times Panel */
+    .travel-times-panel {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .travel-times-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--silver);
+      margin-bottom: 0.75rem;
+    }
+
+    .travel-route {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .travel-route:last-child {
+      border-bottom: none;
+    }
+
+    .travel-route-name {
+      color: var(--muted-foreground);
+    }
+
+    .travel-route-time {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* Warnings Sidebar & Sticky Summary */
+    .sticky-sidebar {
+      position: sticky;
+      top: 110px;
+    }
+
+    .warnings-panel {
+      background: rgba(18, 18, 20, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .warnings-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .warnings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .warning-alert {
+      border-radius: var(--radius);
+      padding: 1rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      display: flex;
+      gap: 0.75rem;
+      animation: slideIn 0.3s ease;
+    }
+
+    .warning-alert.error {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: #fbbf24;
+    }
+
+    .warning-alert.success {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: #34d399;
+    }
+
+    .warning-icon {
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .btn-action-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-action-group .btn {
+      width: 100%;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Film Grain Overlay -->
+  <div class="noise-overlay"></div>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar-inner">
+      <a href="/home/" class="brand">HAUS OF <span>LYRA</span></a>
+      <ul class="nav-links">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/wedding-photography/">Wedding Photography</a></li>
+        <li><a href="/wedding-films/">Wedding Films</a></li>
+        <li><a href="/senior-portraits/">Senior Portraits</a></li>
+        <li><a href="/vendors/">Vendors</a></li>
+      </ul>
+      <a href="/home/#inquire" class="nav-btn">Inquire</a>
+    </div>
+  </nav>
+
+  <!-- PAGE CONTENT -->
+  <section class="section builder-section">
+    <div class="container">
+      
+      <header style="max-width: 800px; margin-bottom: 4rem;">
+        <span class="hero-kicker">Client Planner</span>
+        <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem;">Wedding Timeline &amp; Shot List Builder</h1>
+        <p class="hero-description" style="font-size: 1.05rem; line-height: 1.6;">
+          Let's build the perfect baseline for your day. Fill out your details, venues, and wedding preferences below. 
+          Your progress auto-saves so you can return at any time. When finished, email the schedule straight to us.
+        </p>
+      </header>
+
+      <div class="builder-grid">
+        
+        <!-- MAIN WORKSPACE -->
+        <div>
+          
+          <!-- STEP 1: General Details -->
+          <div class="builder-card">
+            <h2 class="builder-card-title">
+              1. General Details
+              <span class="save-indicator" id="saveIndicator">Auto-saved</span>
+            </h2>
+            
+            <div class="form-row form-row-2">
+              <div class="form-field">
+                <label for="groomName">Groom's Full Name</label>
+                <input type="text" id="groomName" placeholder="Groom Name">
+              </div>
+              <div class="form-field">
+                <label for="brideName">Bride's Full Name</label>
+                <input type="text" id="brideName" placeholder="Bride Name">
+              </div>
+            </div>
+
+            <div class="form-row form-row-3">
+              <div class="form-field">
+                <label for="weddingDate">Wedding Date</label>
+                <input type="date" id="weddingDate">
+              </div>
+              <div class="form-field">
+                <label for="sunsetTime">Estimated Sunset Time *</label>
+                <input type="time" id="sunsetTime" value="20:30">
+              </div>
+              <div class="form-field">
+                <label for="timelineTemplate">Starting Timeline Package</label>
+                <select id="timelineTemplate">
+                  <option value="10-hour-firstlook" selected>10-Hour Signature (with First Look)</option>
+                  <option value="10-hour-traditional">10-Hour Signature (Traditional / No First Look)</option>
+                  <option value="8-hour-firstlook">8-Hour Essential (with First Look)</option>
+                  <option value="8-hour-traditional">8-Hour Essential (Traditional / No First Look)</option>
+                </select>
+              </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--muted-foreground); margin-top: 0.5rem;">
+              * For the best "Golden Hour" lighting, we recommend staging sunset portraits 45-60 minutes before the actual sunset time.
+            </p>
+          </div>
+
+          <!-- STEP 2: Locations & Travel Driving Estimator -->
+          <div class="builder-card">
+            <h2 class="builder-card-title">2. Venue Locations &amp; Travel</h2>
+            <span class="card-subtitle">Search each location address to automatically compute travel times between venues.</span>
+
+            <div class="form-row">
+              <!-- Getting Ready -->
+              <div class="form-field">
+                <label for="locGettingReady">Getting Ready Location Address</label>
+                <div class="address-input-wrapper">
+                  <input type="text" id="locGettingReady" placeholder="Hotel, Airbnb or Residence Address...">
+                  <button type="button" class="btn-search" onclick="geocodeAddress('GettingReady')">Verify</button>
+                </div>
+                <div class="address-status" id="statusGettingReady">Not verified yet</div>
+              </div>
+
+              <!-- First Look / Portraits Location -->
+              <div class="form-field">
+                <label for="locPortraits">First Look &amp; Portrait Location Address (If different)</label>
+                <div class="address-input-wrapper">
+                  <input type="text" id="locPortraits" placeholder="Park, Garden or Venue Location...">
+                  <button type="button" class="btn-search" onclick="geocodeAddress('Portraits')">Verify</button>
+                </div>
+                <div class="address-status" id="statusPortraits">Not verified yet</div>
+              </div>
+
+              <!-- Ceremony -->
+              <div class="form-field">
+                <label for="locCeremony">Ceremony Location Address</label>
+                <div class="address-input-wrapper">
+                  <input type="text" id="locCeremony" placeholder="Church, Chapel or Venue Address...">
+                  <button type="button" class="btn-search" onclick="geocodeAddress('Ceremony')">Verify</button>
+                </div>
+                <div class="address-status" id="statusCeremony">Not verified yet</div>
+              </div>
+
+              <!-- Reception -->
+              <div class="form-field">
+                <label for="locReception">Reception Location Address</label>
+                <div class="address-input-wrapper">
+                  <input type="text" id="locReception" placeholder="Reception Hall or Venue Address...">
+                  <button type="button" class="btn-search" onclick="geocodeAddress('Reception')">Verify</button>
+                </div>
+                <div class="address-status" id="statusReception">Not verified yet</div>
+              </div>
+            </div>
+
+            <!-- Estimated Travel Times Output -->
+            <div class="travel-times-panel" id="travelPanel" style="display: none;">
+              <h3 class="travel-times-title">Calculated Travel Times (estimated driving)</h3>
+              <div id="travelRoutesContainer">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3: Timeline Milestones -->
+          <div class="builder-card">
+            <h2 class="builder-card-title">3. Timeline &amp; Milestones</h2>
+            <span class="card-subtitle">Set times and assign locations to key events. The system validates travel times automatically.</span>
+
+            <div class="timeline-list" id="timelineList">
+              <!-- Dynamically populated from templates -->
+            </div>
+
+            <button type="button" class="btn-add-milestone" onclick="addNewMilestone()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add Custom Timeline Milestone
+            </button>
+          </div>
+
+          <!-- STEP 4: Family Picture Shot List -->
+          <div class="builder-card">
+            <h2 class="builder-card-title">4. Family Portrait Shot List Generator</h2>
+            <span class="card-subtitle">Check the groupings you want. Enter the names of the family members for each grouping to keep portraits running quickly and smoothly on your wedding day.</span>
+
+            <div class="shot-list-grid">
+              
+              <!-- Shot 1 -->
+              <div class="shot-checkbox-card" id="shotCard_1">
+                <div class="shot-header-row" onclick="toggleShot('1')">
+                  <input type="checkbox" id="shotCheck_1">
+                  <div>
+                    <span class="shot-label-text">Bride &amp; Groom + Bride's Parents</span>
+                    <span class="shot-label-desc">Approx. 3 minutes</span>
+                  </div>
+                </div>
+                <div class="shot-names-input">
+                  <input type="text" id="shotNames_1" placeholder="e.g. Mom (Sarah) &amp; Dad (Michael)">
+                </div>
+              </div>
+
+              <!-- Shot 2 -->
+              <div class="shot-checkbox-card" id="shotCard_2">
+                <div class="shot-header-row" onclick="toggleShot('2')">
+                  <input type="checkbox" id="shotCheck_2">
+                  <div>
+                    <span class="shot-label-text">Bride &amp; Groom + Bride's Immediate Family</span>
+                    <span class="shot-label-desc">Parents, Siblings &amp; Spouses</span>
+                  </div>
+                </div>
+                <div class="shot-names-input">
+                  <input type="text" id="shotNames_2" placeholder="e.g. Mom, Dad, Brother (James) &amp; Sister (Emily)">
+                </div>
+              </div>
+
+              <!-- Shot 3 -->
+              <div class="shot-checkbox-card" id="shotCard_3">
+                <div class="shot-header-row" onclick="toggleShot('3')">
+                  <input type="checkbox" id="shotCheck_3">
+                  <div>
+                    <span class="shot-label-text">Bride &amp; Groom + Bride's Grandparents</span>
+                    <span class="shot-label-desc">Approx. 3 minutes</span>
+                  </div>
+                </div>
+                <div class="shot-names-input">
+                  <input type="text" id="shotNames_3" placeholder="e.g. Grandma (Elaine) &amp; Grandpa (John)">
+                </div>
+              </div>
+
+              <!-- Shot 4 -->
+              <div class="shot-checkbox-card" id="shotCard_4">
+                <div class="shot-header-row" onclick="toggleShot('4')">
+                  <input type="checkbox" id="shotCheck_4">
+                  <div>
+                    <span class="shot-label-text">Bride &amp; Groom + Groom's Parents</span>
+                    <span class="shot-label-desc">Approx. 3 minutes</span>
+                  </div>
+                </div>
+                <div class="shot-names-input">
+                  <input type="text" id="shotNames_4" placeholder="e.g. Mom (Julie) &amp; Dad (David)">
+                </div>
+              </div>
+
+              <!-- Shot 5 -->
+              <div class="shot-checkbox-card" id="shotCard_5">
+                <div class="shot-header-row" onclick="toggleShot('5')">
+                  <input type="checkbox" id="shotCheck_5">
+                  <div>
+                    <span class="shot-label-text">Bride &amp; Groom + Groom's Immediate Family</span>
+                    <span class="shot-label-desc">Parents, Siblings &amp; Spouses</span>
+                  </div>
+                </div>
+                <div class="shot-names-input">
+                  <input type="text" id="shotNames_5" placeholder="e.g. Mom, Dad, Brother (Alex)">
+                </div>
+              </div>
+
+              <!-- Shot 6 -->
+              <div class="shot-checkbox-card" id="shotCard_6">
+                <div class="shot-header-row" onclick="toggleShot('6')">
+                  <input type="checkbox" id="shotCheck_6">
+                  <div>
+                    <span class="shot-label-text">Bride &amp; Groom + Groom's Grandparents</span>
+                    <span class="shot-label-desc">Approx. 3 minutes</span>
+                  </div>
+                </div>
+                <div class="shot-names-input">
+                  <input type="text" id="shotNames_6" placeholder="e.g. Grandma (Mary)">
+                </div>
+              </div>
+
+              <!-- Shot 7 -->
+              <div class="shot-checkbox-card" id="shotCard_7">
+                <div class="shot-header-row" onclick="toggleShot('7')">
+                  <input type="checkbox" id="shotCheck_7">
+                  <div>
+                    <span class="shot-label-text">Bride + Mom</span>
+                    <span class="shot-label-desc">Approx. 2 minutes</span>
+                  </div>
+                </div>
+                <div class="shot-names-input">
+                  <input type="text" id="shotNames_7" placeholder="e.g. Mom (Sarah)">
+                </div>
+              </div>
+
+              <!-- Shot 8 -->
+              <div class="shot-checkbox-card" id="shotCard_8">
+                <div class="shot-header-row" onclick="toggleShot('8')">
+                  <input type="checkbox" id="shotCheck_8">
+                  <div>
+                    <span class="shot-label-text">Groom + Dad</span>
+                    <span class="shot-label-desc">Approx. 2 minutes</span>
+                  </div>
+                </div>
+                <div class="shot-names-input">
+                  <input type="text" id="shotNames_8" placeholder="e.g. Dad (David)">
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Custom shot lists -->
+            <div class="custom-shots-list" id="customShotsList">
+              <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--silver); margin-bottom: 0.5rem;">Custom Groupings / Additional Shots</h3>
+              <!-- Populated via script -->
+            </div>
+            
+            <button type="button" class="btn-add-milestone" style="margin-top: 1rem;" onclick="addCustomShot()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add Custom Shot Grouping
+            </button>
+          </div>
+
+        </div>
+
+        <!-- SIDEBAR & WARNING ENGINE -->
+        <div class="sticky-sidebar">
+          
+          <div class="warnings-panel">
+            <h2 class="warnings-title">
+              Timeline Validation
+            </h2>
+            <p style="font-size: 0.82rem; line-height: 1.4; margin-bottom: 1.5rem;">
+              Our smart timing validator checks travel distances, family portrait time frames, and lighting conditions in real-time.
+            </p>
+
+            <div class="warnings-list" id="warningsContainer">
+              <!-- Warnings or Success notifications will render here -->
+              <div class="warning-alert success">
+                <span class="warning-icon">✓</span>
+                <div>All parameters look perfect! Ready to submit.</div>
+              </div>
+            </div>
+
+            <div class="btn-action-group">
+              <button class="btn btn-primary" onclick="emailTimeline()">Submit to Haus of Lyra</button>
+              <button class="btn btn-outline" onclick="copyToClipboard()">Copy Plan Summary</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // State management
+    let coords = {
+      GettingReady: null,
+      Portraits: null,
+      Ceremony: null,
+      Reception: null
+    };
+
+    let travelTimes = {
+      GettingReady_to_Portraits: 0,
+      Portraits_to_Ceremony: 0,
+      Ceremony_to_Reception: 0
+    };
+
+    // Standard Timeline Template Data
+    const templates = {
+      '10-hour-firstlook': [
+        { name: 'Getting Ready / Details', start: '12:00', end: '14:00', loc: 'GettingReady', note: 'Bride and Groom detail shots, final getting ready moments.' },
+        { name: 'First Look & Couple Portraits', start: '14:15', end: '15:15', loc: 'Portraits', note: 'Intimate first look followed by stunning portraits in soft afternoon light.' },
+        { name: 'Wedding Party Photos', start: '15:15', end: '16:00', loc: 'Portraits', note: 'Fun and creative group shots with your wedding party.' },
+        { name: 'Family Portraits', start: '16:00', end: '16:45', loc: 'Ceremony', note: 'Clean and organized family groupings before the ceremony.' },
+        { name: 'Ceremony', start: '17:30', end: '18:00', loc: 'Ceremony', note: 'Wedding ceremony.' },
+        { name: 'Cocktail Hour & Golden Hour Portraits', start: '18:00', end: '19:00', loc: 'Reception', note: 'Guests mingle while we slip away for sunset couple portraits.' },
+        { name: 'Grand Entrance & Dinner', start: '19:15', end: '20:30', loc: 'Reception', note: 'Welcome announcements, toasts, and dinner.' },
+        { name: 'Special Dances & Reception Party', start: '20:30', end: '22:00', loc: 'Reception', note: 'First dance, parent dances, and cake cutting.' }
+      ],
+      '10-hour-traditional': [
+        { name: 'Getting Ready / Details', start: '12:00', end: '14:30', loc: 'GettingReady', note: 'Bride and Groom getting ready details.' },
+        { name: 'Ceremony', start: '15:30', end: '16:00', loc: 'Ceremony', note: 'Wedding ceremony.' },
+        { name: 'Family Portraits', start: '16:15', end: '17:00', loc: 'Ceremony', note: 'Immediate & extended family group shots.' },
+        { name: 'Wedding Party & Couple Portraits', start: '17:00', end: '18:00', loc: 'Portraits', note: 'Portraits of couples and wedding party.' },
+        { name: 'Cocktail Hour / Mingling', start: '18:00', end: '19:00', loc: 'Reception', note: 'Couples join cocktail hour or capture golden hour details.' },
+        { name: 'Grand Entrance & Dinner', start: '19:15', end: '20:30', loc: 'Reception', note: 'Introductions, dinner, toasts.' },
+        { name: 'Special Dances & Party', start: '20:30', end: '22:00', loc: 'Reception', note: 'Dancing, cake cutting, party begins.' }
+      ],
+      '8-hour-firstlook': [
+        { name: 'Getting Ready / Details', start: '13:00', end: '14:30', loc: 'GettingReady', note: 'Detail photos and putting dress/suit on.' },
+        { name: 'First Look & Couple Portraits', start: '14:45', end: '15:45', loc: 'Portraits', note: 'Portraits and first look.' },
+        { name: 'Family & Wedding Party Photos', start: '15:45', end: '16:30', loc: 'Ceremony', note: 'Group portraits.' },
+        { name: 'Ceremony', start: '17:00', end: '17:30', loc: 'Ceremony', note: 'Ceremony.' },
+        { name: 'Cocktail Hour & Sunset Shots', start: '17:30', end: '18:30', loc: 'Reception', note: 'Sunset pictures.' },
+        { name: 'Entrance, Dinner & Dances', start: '18:45', end: '21:00', loc: 'Reception', note: 'Dinner, toasts, and dancing.' }
+      ],
+      '8-hour-traditional': [
+        { name: 'Getting Ready / Details', start: '13:00', end: '15:00', loc: 'GettingReady', note: 'Pre-ceremony prep.' },
+        { name: 'Ceremony', start: '16:00', end: '16:30', loc: 'Ceremony', note: 'Wedding ceremony.' },
+        { name: 'Family & Wedding Party Photos', start: '16:45', end: '17:30', loc: 'Ceremony', note: 'Group shots.' },
+        { name: 'Couple Portraits', start: '17:30', end: '18:15', loc: 'Portraits', note: 'Couples portraits during golden hour.' },
+        { name: 'Dinner & Reception Entrance', start: '18:30', end: '20:00', loc: 'Reception', note: 'Dinner and toasts.' },
+        { name: 'First Dance & Dancing', start: '20:00', end: '21:00', loc: 'Reception', note: 'Special dances and dancing.' }
+      ]
+    };
+
+    // Load templates into timeline
+    function loadTemplate(templateKey) {
+      const milestones = templates[templateKey];
+      const list = document.getElementById('timelineList');
+      list.innerHTML = '';
+      
+      milestones.forEach((m, i) => {
+        addMilestoneToDOM(m.name, m.start, m.end, m.loc, m.note);
+      });
+      validateTimeline();
+    }
+
+    function addMilestoneToDOM(name = '', start = '12:00', end = '13:00', loc = 'Ceremony', note = '') {
+      const list = document.getElementById('timelineList');
+      const index = list.children.length;
+      
+      const item = document.createElement('div');
+      item.className = 'milestone-item';
+      item.innerHTML = `
+        <div class="milestone-time-inputs">
+          <input type="time" class="milestone-start" value="${start}" onchange="saveAndValidate()">
+          <span>to</span>
+          <input type="time" class="milestone-end" value="${end}" onchange="saveAndValidate()">
+        </div>
+        <div class="form-field" style="margin-bottom: 0;">
+          <input type="text" class="milestone-name" value="${name}" placeholder="Milestone Name" onchange="saveAndValidate()">
+        </div>
+        <div class="milestone-note">
+          <textarea class="milestone-note-text" placeholder="Timeline notes/details..." onchange="saveAndValidate()">${note}</textarea>
+        </div>
+        <div class="milestone-select form-field" style="margin-bottom: 0;">
+          <select class="milestone-location" onchange="saveAndValidate()">
+            <option value="GettingReady" ${loc === 'GettingReady' ? 'selected' : ''}>Getting Ready Location</option>
+            <option value="Portraits" ${loc === 'Portraits' ? 'selected' : ''}>Portraits Location</option>
+            <option value="Ceremony" ${loc === 'Ceremony' ? 'selected' : ''}>Ceremony Venue</option>
+            <option value="Reception" ${loc === 'Reception' ? 'selected' : ''}>Reception Venue</option>
+          </select>
+        </div>
+        <button type="button" class="btn-delete-milestone" onclick="deleteMilestone(this)">✕</button>
+      `;
+      list.appendChild(item);
+    }
+
+    function addNewMilestone() {
+      addMilestoneToDOM('Custom Milestone', '17:00', '18:00', 'Ceremony', '');
+      saveAndValidate();
+    }
+
+    function deleteMilestone(btn) {
+      btn.closest('.milestone-item').remove();
+      saveAndValidate();
+    }
+
+    // Geocoding addresses using Nominatim OSM
+    async function geocodeAddress(type) {
+      const input = document.getElementById(`loc${type}`);
+      const statusDiv = document.getElementById(`status${type}`);
+      const address = input.value.trim();
+
+      if (!address) {
+        statusDiv.className = 'address-status';
+        statusDiv.textContent = 'Please enter an address';
+        coords[type] = null;
+        updateTravelEstimates();
+        saveAndValidate();
+        return;
+      }
+
+      statusDiv.className = 'address-status';
+      statusDiv.textContent = 'Searching...';
+
+      try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`);
+        const data = await response.json();
+
+        if (data && data.length > 0) {
+          coords[type] = {
+            lat: parseFloat(data[0].lat),
+            lon: parseFloat(data[0].lon),
+            display_name: data[0].display_name
+          };
+          statusDiv.className = 'address-status verified';
+          statusDiv.textContent = '✓ Verified Location';
+          updateTravelEstimates();
+        } else {
+          statusDiv.className = 'address-status';
+          statusDiv.textContent = 'Address not found. Please clarify.';
+          coords[type] = null;
+          updateTravelEstimates();
+        }
+      } catch (err) {
+        statusDiv.className = 'address-status';
+        statusDiv.textContent = 'Network error verifying address.';
+        coords[type] = null;
+      }
+      saveAndValidate();
+    }
+
+    // Calculate Route Durations using OSRM Routing Engine
+    async function updateTravelEstimates() {
+      const pairs = [
+        { from: 'GettingReady', to: 'Portraits', key: 'GettingReady_to_Portraits', label: 'Getting Ready → Portraits' },
+        { from: 'Portraits', to: 'Ceremony', key: 'Portraits_to_Ceremony', label: 'Portraits → Ceremony' },
+        { from: 'Ceremony', to: 'Reception', key: 'Ceremony_to_Reception', label: 'Ceremony → Reception' }
+      ];
+
+      const travelPanel = document.getElementById('travelPanel');
+      const container = document.getElementById('travelRoutesContainer');
+      container.innerHTML = '';
+      
+      let hasData = false;
+
+      for (let p of pairs) {
+        const locA = coords[p.from] || (p.from === 'Portraits' ? coords['GettingReady'] : null);
+        const locB = coords[p.to];
+
+        if (locA && locB && (locA.lat !== locB.lat || locA.lon !== locB.lon)) {
+          try {
+            const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${locA.lon},${locA.lat};${locB.lon},${locB.lat}?overview=false`);
+            const data = await res.json();
+            if (data && data.routes && data.routes[0]) {
+              const durationMins = Math.round(data.routes[0].duration / 60);
+              travelTimes[p.key] = durationMins;
+              hasData = true;
+
+              const routeDiv = document.createElement('div');
+              routeDiv.className = 'travel-route';
+              routeDiv.innerHTML = `
+                <span class="travel-route-name">${p.label}</span>
+                <span class="travel-route-time">${durationMins} mins driving</span>
+              `;
+              container.appendChild(routeDiv);
+            }
+          } catch (e) {
+            console.error("OSRM Route Error: ", e);
+          }
+        } else {
+          travelTimes[p.key] = 0;
+        }
+      }
+
+      travelPanel.style.display = hasData ? 'block' : 'none';
+      validateTimeline();
+    }
+
+    // Shot List Management
+    function toggleShot(id) {
+      const checkbox = document.getElementById(`shotCheck_${id}`);
+      const card = document.getElementById(`shotCard_${id}`);
+      
+      // Toggle if clicked wrapper (without double checking checkbox)
+      if (event.target.type !== 'checkbox') {
+        checkbox.checked = !checkbox.checked;
+      }
+
+      if (checkbox.checked) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+      saveAndValidate();
+    }
+
+    function addCustomShot(groupName = '', namesList = '') {
+      const container = document.getElementById('customShotsList');
+      const div = document.createElement('div');
+      div.className = 'custom-shot-item';
+      div.innerHTML = `
+        <input type="text" class="custom-shot-group" placeholder="e.g. Groom + College Friends" value="${groupName}" onchange="saveAndValidate()">
+        <input type="text" class="custom-shot-names" placeholder="Names (e.g. Mark, Luke, Steve)" value="${namesList}" onchange="saveAndValidate()">
+        <button type="button" class="btn-delete-milestone" onclick="this.parentElement.remove(); saveAndValidate();">✕</button>
+      `;
+      container.appendChild(div);
+      saveAndValidate();
+    }
+
+    // Dynamic warning validations
+    function validateTimeline() {
+      const warningsContainer = document.getElementById('warningsContainer');
+      warningsContainer.innerHTML = '';
+      
+      const milestones = [];
+      const milestoneElements = document.querySelectorAll('.milestone-item');
+      
+      milestoneElements.forEach(el => {
+        milestones.push({
+          name: el.querySelector('.milestone-name').value,
+          start: el.querySelector('.milestone-start').value,
+          end: el.querySelector('.milestone-end').value,
+          loc: el.querySelector('.milestone-location').value
+        });
+      });
+
+      // Sort milestones by start time
+      milestones.sort((a, b) => a.start.localeCompare(b.start));
+
+      let alerts = [];
+
+      // 1. Validate chronological consistency & travel times
+      for (let i = 0; i < milestones.length - 1; i++) {
+        const current = milestones[i];
+        const next = milestones[i+1];
+
+        if (current.end > next.start) {
+          alerts.push({
+            type: 'error',
+            msg: `<strong>Overlap Warning:</strong> "${current.name}" ends at ${current.end}, but "${next.name}" starts earlier at ${next.start}.`
+          });
+        }
+
+        // Travel buffer validation
+        if (current.loc !== next.loc) {
+          const travelKey = `${current.loc}_to_${next.loc}`;
+          const reverseTravelKey = `${next.loc}_to_${current.loc}`;
+          const travelTime = travelTimes[travelKey] || travelTimes[reverseTravelKey] || 0;
+
+          if (travelTime > 0) {
+            // Compute minutes between current.end and next.start
+            const currentEndMin = timeToMinutes(current.end);
+            const nextStartMin = timeToMinutes(next.start);
+            const gap = nextStartMin - currentEndMin;
+
+            if (gap < travelTime) {
+              alerts.push({
+                type: 'error',
+                msg: `<strong>Travel Buffer Conflict:</strong> Estimated travel between ${formatLocName(current.loc)} and ${formatLocName(next.loc)} is ${travelTime} mins, but your scheduled gap is only ${gap} mins.`
+              });
+            }
+          }
+        }
+      }
+
+      // 2. Family portraits shot duration check
+      const checkedFamilyShots = document.querySelectorAll('.shot-list-grid input[type="checkbox"]:checked').length;
+      const customShots = document.querySelectorAll('.custom-shot-item').length;
+      const totalShots = checkedFamilyShots + customShots;
+      const estimatedShotTimeNeeded = totalShots * 3; // Approx 3 mins per family grouping
+
+      // Find family portrait milestone duration
+      const familyMilestone = milestones.find(m => m.name.toLowerCase().includes('family') || m.name.toLowerCase().includes('shot list'));
+      if (familyMilestone) {
+        const duration = timeToMinutes(familyMilestone.end) - timeToMinutes(familyMilestone.start);
+        if (duration < estimatedShotTimeNeeded) {
+          alerts.push({
+            type: 'error',
+            msg: `<strong>Family Photos Warning:</strong> You have ${totalShots} family groupings selected (which takes ~${estimatedShotTimeNeeded} mins), but you only blocked out ${duration} mins for Family Portraits.`
+          });
+        }
+      }
+
+      // 3. Sunset / Golden Hour portrait checks
+      const sunsetStr = document.getElementById('sunsetTime').value;
+      if (sunsetStr) {
+        const sunsetMin = timeToMinutes(sunsetStr);
+        const portraitMilestone = milestones.find(m => m.name.toLowerCase().includes('portrait') || m.name.toLowerCase().includes('couple'));
+        
+        if (portraitMilestone) {
+          const portraitStartMin = timeToMinutes(portraitMilestone.start);
+          if (portraitStartMin > sunsetMin) {
+            alerts.push({
+              type: 'error',
+              msg: `<strong>Sunset Portrait Warning:</strong> Your Couple Portraits are scheduled at ${portraitMilestone.start}, which is after sunset (${sunsetStr}). You will lose natural lighting.`
+            });
+          }
+        }
+      }
+
+      // Render alerts
+      if (alerts.length === 0) {
+        warningsContainer.innerHTML = `
+          <div class="warning-alert success">
+            <span class="warning-icon">✓</span>
+            <div>Everything looks clean! Travel gaps are safe and timelines align.</div>
+          </div>
+        `;
+      } else {
+        alerts.forEach(alert => {
+          const div = document.createElement('div');
+          div.className = `warning-alert ${alert.type}`;
+          div.innerHTML = `
+            <span class="warning-icon">${alert.type === 'error' ? '⚠' : '✓'}</span>
+            <div>${alert.msg}</div>
+          `;
+          warningsContainer.appendChild(div);
+        });
+      }
+    }
+
+    function timeToMinutes(timeStr) {
+      if (!timeStr) return 0;
+      const parts = timeStr.split(':');
+      return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    }
+
+    function formatLocName(loc) {
+      if (loc === 'GettingReady') return 'Getting Ready Venue';
+      if (loc === 'Portraits') return 'Portrait Venue';
+      if (loc === 'Ceremony') return 'Ceremony Venue';
+      if (loc === 'Reception') return 'Reception Venue';
+      return loc;
+    }
+
+    // Auto-save logic to LocalStorage
+    function saveProgress() {
+      const data = {
+        groomName: document.getElementById('groomName').value,
+        brideName: document.getElementById('brideName').value,
+        weddingDate: document.getElementById('weddingDate').value,
+        sunsetTime: document.getElementById('sunsetTime').value,
+        timelineTemplate: document.getElementById('timelineTemplate').value,
+        
+        locGettingReady: document.getElementById('locGettingReady').value,
+        locPortraits: document.getElementById('locPortraits').value,
+        locCeremony: document.getElementById('locCeremony').value,
+        locReception: document.getElementById('locReception').value,
+
+        milestones: Array.from(document.querySelectorAll('.milestone-item')).map(el => ({
+          name: el.querySelector('.milestone-name').value,
+          start: el.querySelector('.milestone-start').value,
+          end: el.querySelector('.milestone-end').value,
+          loc: el.querySelector('.milestone-location').value,
+          note: el.querySelector('.milestone-note-text').value
+        })),
+
+        checkedShots: Array.from(document.querySelectorAll('.shot-list-grid input[type="checkbox"]')).map(el => ({
+          id: el.id.split('_')[1],
+          checked: el.checked,
+          names: document.getElementById(`shotNames_${el.id.split('_')[1]}`).value
+        })),
+
+        customShots: Array.from(document.querySelectorAll('.custom-shot-item')).map(el => ({
+          group: el.querySelector('.custom-shot-group').value,
+          names: el.querySelector('.custom-shot-names').value
+        }))
+      };
+
+      localStorage.setItem('haus_wedding_builder_data', JSON.stringify(data));
+      
+      const indicator = document.getElementById('saveIndicator');
+      indicator.textContent = 'Progress Saved';
+      setTimeout(() => {
+        indicator.textContent = 'Auto-saved';
+      }, 1500);
+    }
+
+    function loadProgress() {
+      const saved = localStorage.getItem('haus_wedding_builder_data');
+      if (!saved) {
+        // Load default template if no save exists
+        loadTemplate('10-hour-firstlook');
+        return;
+      }
+
+      try {
+        const data = JSON.parse(saved);
+        document.getElementById('groomName').value = data.groomName || '';
+        document.getElementById('brideName').value = data.brideName || '';
+        document.getElementById('weddingDate').value = data.weddingDate || '';
+        document.getElementById('sunsetTime').value = data.sunsetTime || '20:30';
+        document.getElementById('timelineTemplate').value = data.timelineTemplate || '10-hour-firstlook';
+        
+        document.getElementById('locGettingReady').value = data.locGettingReady || '';
+        document.getElementById('locPortraits').value = data.locPortraits || '';
+        document.getElementById('locCeremony').value = data.locCeremony || '';
+        document.getElementById('locReception').value = data.locReception || '';
+
+        // Load milestones
+        const list = document.getElementById('timelineList');
+        list.innerHTML = '';
+        if (data.milestones && data.milestones.length > 0) {
+          data.milestones.forEach(m => {
+            addMilestoneToDOM(m.name, m.start, m.end, m.loc, m.note);
+          });
+        }
+
+        // Load shot checklist
+        if (data.checkedShots) {
+          data.checkedShots.forEach(s => {
+            const checkbox = document.getElementById(`shotCheck_${s.id}`);
+            const card = document.getElementById(`shotCard_${s.id}`);
+            const namesInput = document.getElementById(`shotNames_${s.id}`);
+            if (checkbox && card) {
+              checkbox.checked = s.checked;
+              namesInput.value = s.names || '';
+              if (s.checked) card.classList.add('active');
+            }
+          });
+        }
+
+        // Load custom shots
+        const customContainer = document.getElementById('customShotsList');
+        customContainer.innerHTML = '<h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--silver); margin-bottom: 0.5rem;">Custom Groupings / Additional Shots</h3>';
+        if (data.customShots) {
+          data.customShots.forEach(cs => {
+            addCustomShot(cs.group, cs.names);
+          });
+        }
+
+        // Trigger validations
+        updateTravelEstimates();
+      } catch (err) {
+        console.error("Error loading saved data: ", err);
+      }
+    }
+
+    function saveAndValidate() {
+      saveProgress();
+      validateTimeline();
+    }
+
+    // Compilation export helpers
+    function compileSummaryText() {
+      const groom = document.getElementById('groomName').value || 'TBD';
+      const bride = document.getElementById('brideName').value || 'TBD';
+      const date = document.getElementById('weddingDate').value || 'TBD';
+      
+      let text = `=========================================\n`;
+      text += `WEDDING TIMELINE & SHOT LIST SUMMARY\n`;
+      text += `=========================================\n`;
+      text += `Couple: ${bride} & ${groom}\n`;
+      text += `Wedding Date: ${date}\n\n`;
+
+      text += `LOCATIONS:\n`;
+      text += `- Getting Ready: ${document.getElementById('locGettingReady').value || 'N/A'}\n`;
+      text += `- Portraits: ${document.getElementById('locPortraits').value || 'N/A'}\n`;
+      text += `- Ceremony: ${document.getElementById('locCeremony').value || 'N/A'}\n`;
+      text += `- Reception: ${document.getElementById('locReception').value || 'N/A'}\n\n`;
+
+      text += `TIMELINE MILESTONES:\n`;
+      const milestoneElements = document.querySelectorAll('.milestone-item');
+      milestoneElements.forEach(el => {
+        const name = el.querySelector('.milestone-name').value;
+        const start = el.querySelector('.milestone-start').value;
+        const end = el.querySelector('.milestone-end').value;
+        const loc = formatLocName(el.querySelector('.milestone-location').value);
+        const note = el.querySelector('.milestone-note-text').value;
+        text += `[${start} - ${end}] ${name} (${loc})\n`;
+        if (note) text += `   Note: ${note}\n`;
+      });
+      text += `\n`;
+
+      text += `FAMILY SHOT LIST:\n`;
+      document.querySelectorAll('.shot-list-grid input[type="checkbox"]:checked').forEach(el => {
+        const id = el.id.split('_')[1];
+        const title = el.closest('.shot-checkbox-card').querySelector('.shot-label-text').textContent;
+        const names = document.getElementById(`shotNames_${id}`).value;
+        text += `- ${title}\n`;
+        if (names) text += `  Names: ${names}\n`;
+      });
+
+      const customShots = document.querySelectorAll('.custom-shot-item');
+      if (customShots.length > 0) {
+        text += `\nCUSTOM GROUPINGS:\n`;
+        customShots.forEach(el => {
+          const group = el.querySelector('.custom-shot-group').value;
+          const names = el.querySelector('.custom-shot-names').value;
+          text += `- ${group}: ${names}\n`;
+        });
+      }
+
+      return text;
+    }
+
+    function copyToClipboard() {
+      const text = compileSummaryText();
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Wedding Schedule summary successfully copied to clipboard!");
+      }).catch(err => {
+        alert("Failed to copy summary to clipboard.");
+      });
+    }
+
+    function emailTimeline() {
+      const summaryText = compileSummaryText();
+      const subject = `Wedding Timeline Details - ${document.getElementById('brideName').value || 'Bride'} & ${document.getElementById('groomName').value || 'Groom'}`;
+      const mailtoUrl = `mailto:thehausoflyra@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(summaryText)}`;
+      window.location.href = mailtoUrl;
+    }
+
+    // Event Listeners
+    document.getElementById('timelineTemplate').addEventListener('change', function(e) {
+      if (confirm("Changing templates will reset any custom adjustments you've made to the milestones. Continue?")) {
+        loadTemplate(e.target.value);
+        saveAndValidate();
+      } else {
+        // Restore previous value
+        const saved = localStorage.getItem('haus_wedding_builder_data');
+        if (saved) {
+          const data = JSON.parse(saved);
+          e.target.value = data.timelineTemplate;
+        }
+      }
+    });
+
+    // Inputs monitoring for auto-save
+    const formInputs = ['groomName', 'brideName', 'weddingDate', 'sunsetTime', 'locGettingReady', 'locPortraits', 'locCeremony', 'locReception'];
+    formInputs.forEach(id => {
+      document.getElementById(id).addEventListener('input', saveAndValidate);
+    });
+
+    // Initialize Page
+    window.addEventListener('DOMContentLoaded', loadProgress);
+  </script>
+</body>
+</html>

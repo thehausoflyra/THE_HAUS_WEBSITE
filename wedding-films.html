@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wedding Films | Haus of Lyra | Des Moines, Iowa</title>
+    <meta
+      name="description"
+      content="Cinematic and personal wedding films by Haus of Lyra. Capture the sound, the laughter, the vows, and the motion of your day."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .featured-films-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        margin-top: 4rem;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      @media(min-width: 768px) {
+        .featured-films-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .featured-film-item {
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: transform 0.3s ease, border-color 0.3s ease;
+      }
+      .featured-film-item:hover {
+        transform: translateY(-5px);
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+      .featured-film-video-wrap {
+        position: relative;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        width: 100%;
+        height: 0;
+        background: #000;
+      }
+      .featured-film-video-wrap video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+      .featured-film-info {
+        padding: 2rem;
+      }
+      .featured-film-title {
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        color: #fff;
+        margin-bottom: 0.5rem;
+      }
+      .coming-soon-banner {
+        margin-top: 5rem;
+        text-align: center;
+        padding: 4rem 2rem;
+        border: 1px dashed rgba(206, 173, 111, 0.3);
+        border-radius: var(--radius);
+        background: rgba(206, 173, 111, 0.02);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .coming-soon-kicker {
+        font-family: var(--font-sans);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 0.8rem;
+        color: var(--gold);
+        display: block;
+        margin-bottom: 1rem;
+      }
+      .coming-soon-title {
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        color: #fff;
+        margin-bottom: 1rem;
+        font-weight: 300;
+      }
+      .coming-soon-desc {
+        color: var(--muted-foreground);
+        max-width: 500px;
+        margin: 0 auto;
+        line-height: 1.8;
+        font-size: 0.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Film Grain Overlay -->
+    <div class="noise-overlay"></div>
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+      <div class="container navbar-inner">
+        <a href="/home/" class="brand">HAUS OF <span>LYRA</span></a
+        ><!-- Mobile Menu Toggle --><button
+          class="menu-toggle"
+          id="menuToggle"
+          aria-label="Toggle Navigation"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="/home/">Home</a></li>
+          <li><a href="/wedding-photography/">Wedding Photography</a></li>
+          <li><a href="/wedding-films/" class="active">Wedding Films</a></li>
+          <li><a href="/senior-portraits/">Senior Portraits</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" style="cursor: default;">More ▾</a>
+            <ul class="dropdown-menu">
+              <li><a href="/about/">About</a></li>
+              <li><a href="/vendors/">Favorite Vendors</a></li>
+              <li><a href="/hot-takes/">Blog</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a href="#inquire" class="nav-btn">Inquire</a>
+      </div>
+    </nav>
+    <!-- PAGE HEADER -->
+    <header class="hero" style="min-height: 80vh; padding-bottom: 4rem">
+      <div class="container" style="position: relative; z-index: 2">
+        <div class="grid grid-2" style="align-items: center; text-align: left">
+          <div>
+            <span class="hero-kicker">Preserve the Sound &amp; Motion</span>
+            <h1
+              class="hero-title"
+              style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1.5rem"
+            >
+              Wedding Films
+            </h1>
+            <p
+              class="hero-description"
+              style="font-size: 1.1rem; margin-bottom: 2rem"
+            >
+              Photographs preserve moments. Film preserves life. There is a
+              specific magic to movement, voices, laughter, and cadence that
+              nothing else can replicate.
+            </p>
+            <p class="editorial-statement" style="font-size: 1.35rem">
+              These are the pieces that deserve to be remembered exactly as they
+              happened.
+            </p>
+            <a
+              href="#investment"
+              class="btn btn-primary"
+              style="margin-top: 1rem"
+              >View Film Packages</a
+            >
+          </div>
+          <div class="editorial-img-wrap" style="position: relative">
+            <!-- Custom Video Overlay Style -->
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2;
+              "
+            >
+              <svg
+                viewBox="0 0 24 24"
+                style="
+                  width: 70px;
+                  height: 70px;
+                  fill: #fff;
+                  filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.4));
+                  opacity: 0.85;
+                "
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+            <img
+              src="/wedding-pictures/8.png"
+              alt="Cinematic Film Frame"
+              class="editorial-img"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- PHILOSOPHY & STORY -->
+    <section class="section section-darker">
+      <div class="container">
+        <div
+          class="grid grid-2"
+          style="align-items: center; margin-bottom: 5rem"
+        >
+          <div>
+            <span class="section-kicker">Timeless Quality</span>
+            <h2 class="section-title">
+              Built around character,
+              <span class="hero-italic">not trends</span>.
+            </h2>
+            <p style="margin-bottom: 1.5rem; line-height: 1.8">
+              At Haus of Lyra, I don't believe in templates or trendy filters
+              that will feel dated in five years. I focus on creating cinematic
+              films that feel timeless, emotional, and deeply personal.
+            </p>
+            <p style="line-height: 1.8">
+              Every couple is different, which means every film I cut is
+              entirely unique. I don't force your day into a cookie-cutter
+              structure; I craft a narrative that reflects who you actually are.
+            </p>
+            <p class="editorial-statement" style="margin-top: 2rem">
+              The result is a wedding film that feels less like a highlight
+              recap and more like a time machine.
+            </p>
+          </div>
+          <div>
+            <span class="section-kicker">The Approach</span>
+            <h2 class="section-title">
+              Real audio. Natural interactions.
+              <span class="hero-italic">Genuine emotion</span>.
+            </h2>
+            <p style="margin-bottom: 1.5rem; line-height: 1.8">
+              I document your day as it naturally unfolds, using beautiful
+              cinematic visuals to elevate the underlying story. The goal isn't
+              simply to show what happened on a Saturday in Iowa.
+            </p>
+            <p
+              class="editorial-statement"
+              style="
+                color: var(--silver);
+                font-size: 1.4rem;
+                margin-top: 2rem;
+                border: none;
+                padding-left: 0;
+              "
+            >
+              The goal is to make you feel it all over again.
+            </p>
+          </div>
+        </div>
+        <!-- Video Grid containing actual playble films -->
+        <div class="featured-films-grid">
+          <div class="featured-film-item">
+            <div class="featured-film-video-wrap">
+              <video src="https://thehausoflyra.com/wp-content/uploads/2026/06/haus-wedding-film-couple-motion.mp4" controls poster="/wedding-pictures/13.png"></video>
+            </div>
+            <div class="featured-film-info">
+              <h3 class="featured-film-title">Couple Motion</h3>
+              <span class="portfolio-meta">Cinematic Highlight</span>
+            </div>
+          </div>
+          <div class="featured-film-item">
+            <div class="featured-film-video-wrap">
+              <video src="https://thehausoflyra.com/wp-content/uploads/2026/06/haus-wedding-film-first-dance.mp4" controls poster="/wedding-pictures/12.png"></video>
+            </div>
+            <div class="featured-film-info">
+              <h3 class="featured-film-title">First Dance</h3>
+              <span class="portfolio-meta">Feature Film Highlight</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coming Soon Banner -->
+        <div class="coming-soon-banner">
+          <span class="coming-soon-kicker">More Stories</span>
+          <h3 class="coming-soon-title">More Films Coming Soon</h3>
+          <p class="coming-soon-desc">
+            I'm constantly editing and uploading new stories. Check back soon for more cinematic wedding films and client highlights.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- INVESTMENT -->
+    <section class="section" id="investment">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 5rem">
+          <span class="section-kicker">Film Pricing</span>
+          <h2 class="section-title">Wedding Film Collections</h2>
+          <p class="section-subtitle" style="margin: 0 auto">
+            Starting at $2,500
+          </p>
+        </div>
+        <div class="investment-grid">
+          <!-- Highlight -->
+          <div class="price-card">
+            <span class="price-kicker">Package One</span>
+            <h3 class="price-title">The Highlight</h3>
+            <div class="price-amount">$2,500</div>
+            <p
+              style="
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+                color: var(--muted-foreground);
+              "
+            >
+              A cinematic short film capturing the essence of your day.
+            </p>
+            <ul class="price-features">
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Up to 6 hours coverage
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Lead videographer
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                2-3 min cinematic highlight film
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                3-5 minute feature film
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                High-resolution online delivery
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Personal-use license
+              </li>
+            </ul>
+            <a href="#inquire" class="btn btn-outline">Select Highlight</a>
+          </div>
+          <!-- Feature -->
+          <div class="price-card price-card-featured">
+            <span class="price-badge">Popular Choice</span
+            ><span class="price-kicker">Package Two</span>
+            <h3 class="price-title">The Feature</h3>
+            <div class="price-amount">$4,000</div>
+            <p
+              style="
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+                color: var(--muted-foreground);
+              "
+            >
+              Full storytelling from morning through reception.
+            </p>
+            <ul class="price-features">
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Full-day wedding coverage
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Lead + second videographer
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                2-4 min cinematic highlight film
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                5-7 minute feature film
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Custom original song
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Drone footage (when permitted)
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                High-resolution delivery
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Personal-use license
+              </li>
+            </ul>
+            <a href="#inquire" class="btn btn-primary">Select Feature</a>
+          </div>
+          <!-- Full Cinematic -->
+          <div class="price-card">
+            <span class="price-kicker">Package Three</span>
+            <h3 class="price-title">The Full Cinematic</h3>
+            <div class="price-amount">$6,500</div>
+            <p
+              style="
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+                color: var(--muted-foreground);
+              "
+            >
+              The complete film -- every moment, every emotion.
+            </p>
+            <ul class="price-features">
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Rehearsal dinner & weekend coverage
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Wedding day coverage
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Lead + two additional videographers
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                3-5 min cinematic highlight film
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                10-15 min extended feature film
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Custom original song
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Drone footage (when permitted)
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                High-resolution delivery
+              </li>
+              <li class="price-feature-item">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                </svg>
+                Personal-use license
+              </li>
+            </ul>
+            <a href="#inquire" class="btn btn-outline">Select Full Cinematic</a>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 3.5rem">
+          <p style="font-size: 0.95rem; max-width: 700px; margin: 0 auto">
+            All film collections include professional audio capture, cinematic
+            editing, digital delivery, and a shareable online viewing
+            experience.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- CTA & INQUIRY FOOTER -->
+    <section class="section section-darker" id="inquire">
+      <div class="container">
+        <div style="text-align: center; max-width: 800px; margin: 0 auto 4rem">
+          <span class="section-kicker" style="color: var(--silver)"
+            >The Value of Film</span
+          >
+          <h2 class="section-title">Capture the sound and the motion.</h2>
+          <p style="line-height: 1.8; font-size: 1.1rem; margin-bottom: 2rem">
+            Many couples tell me the same thing after the wedding is over: "I
+            didn't realize how much I'd treasure hearing those voices again."
+            Film catches the laughter, the speeches, the vows, and the movement
+            that slips through the cracks of a still image.
+          </p>
+          <p
+            class="editorial-statement"
+            style="border: none; padding-left: 0; text-align: center"
+          >
+            Long after the day is done, your story keeps playing.
+          </p>
+        </div>
+          <p style="margin-bottom: 2rem; color: var(--muted-foreground); line-height: 1.8; text-align: center;">
+            Ready to plan your wedding film? Click below to open my inquiry form.
+          </p>
+          <a href="#inquire" class="btn btn-primary" data-action="inquire" style="display: flex; max-width: 300px; margin: 0 auto; text-align: center; justify-content: center;">Open Inquiry Form</a>
+      </div>
+    </section>
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">HAUS OF <span>LYRA</span></div>
+        <p class="footer-kicker">Des Moines, Iowa</p>
+        <p class="footer-copy">
+          &copy; 2026 Haus of Lyra. All rights reserved. |
+          <a
+            href="/privacy-policy/"
+            style="text-decoration: underline; color: rgba(255, 255, 255, 0.45)"
+            >Privacy Policy</a
+          >
+        </p>
+      </div>
+    </footer>
+    <script>
+      // Navbar Scroll Effect window.addEventListener('scroll', function() { const navbar = document.getElementById('navbar'); if (window.scrollY > 50) { navbar.style.background = 'rgba(5, 5, 6, 0.85)'; navbar.style.height = '80px'; } else { navbar.style.background = 'rgba(5, 5, 6, 0.4)'; navbar.style.height = '90px'; } }); // Mobile Menu Controller const menuToggle = document.getElementById('menuToggle'); const navLinks = document.querySelector('.nav-links'); if (menuToggle && navLinks) { menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('open'); navLinks.classList.toggle('open'); document.body.classList.toggle('menu-open'); }); navLinks.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { menuToggle.classList.remove('open'); navLinks.classList.remove('open'); document.body.classList.remove('menu-open'); }); }); } // Form Submission Logic document.getElementById('contactForm').addEventListener('submit', function(e) { e.preventDefault(); const submitBtn = document.getElementById('submitBtn'); const formMsg = document.getElementById('formMsg'); formMsg.className = 'form-msg'; formMsg.textContent = ''; submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; const payload = { name: document.getElementById('name').value, email: document.getElementById('email').value, phone: document.getElementById('phone').value, subject: "Film Inquiry: " + (document.getElementById('subject').value || 'Inquiry'), message: document.getElementById('message').value }; fetch('/wp-json/haus/v1/contact-submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }) .then(res => { if (!res.ok) { return res.json().then(err => { throw new Error(err.message || 'Error sending message.') }); } return res.json(); }) .then(data => { formMsg.classList.add('form-msg-success'); formMsg.textContent = data.message || 'Your inquiry has been submitted successfully!'; document.getElementById('contactForm').reset(); }) .catch(err => { formMsg.classList.add('form-msg-error'); formMsg.textContent = err.message || 'Failed to submit inquiry. Please try again or email thehausoflyra@gmail.com directly.'; }) .finally(() => { submitBtn.disabled = false; submitBtn.textContent = 'Send Inquiry'; }); });
+    </script>
+  </body>
+</html>

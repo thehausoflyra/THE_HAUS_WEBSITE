@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trusted Vendors | Haus of Lyra</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Vendors Page - Modern Light Theme */
+        body.vendors-page {
+            background-color: #faf9f7;
+        }
+
+        .vendors-page .noise-overlay {
+            opacity: 0.008;
+        }
+
+        .vendors-hero {
+            text-align: center;
+            padding: 10rem 2rem 6rem;
+            background: linear-gradient(135deg, #faf9f7 0%, #f5f3f1 100%);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .vendors-hero h1 {
+            font-size: 3.5rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .vendors-hero p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: #666;
+            font-style: italic;
+        }
+
+        .section.vendors-section {
+            padding: 5rem 2rem;
+            background-color: #faf9f7;
+        }
+
+        .vendors-intro {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            text-align: center;
+        }
+
+        .vendors-intro p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .vendors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .vendor-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.09);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .vendor-card:hover {
+            border-color: rgba(0, 0, 0, 0.15);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px);
+        }
+
+        .vendor-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #e8e6e3 0%, #f0ede9 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .vendor-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .vendor-image img.error {
+            display: none;
+        }
+
+        .vendor-image .placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e8e6e3 0%, #f0ede9 100%);
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .vendor-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vendor-category {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+
+        .vendor-card h3 {
+            font-size: 1.3rem;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        .vendor-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .vendor-link {
+            display: inline-block;
+            color: white;
+            background: #1a1a1a;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #1a1a1a;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .vendor-link:hover {
+            background: white;
+            color: #1a1a1a;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .cta-section p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            color: #ccc;
+        }
+
+        .cta-section .vendor-link {
+            background: white;
+            color: #1a1a1a;
+            border-color: white;
+        }
+
+        .cta-section .vendor-link:hover {
+            background: #f0f0f0;
+            color: #1a1a1a;
+            border-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 1100px;
+        }
+
+        @media (max-width: 768px) {
+            .vendors-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .vendors-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .vendors-hero {
+                padding: 4rem 1.5rem;
+            }
+
+            .section.vendors-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .vendor-image {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body class="vendors-page">
+    <div class="noise-overlay"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+      <div class="container navbar-inner">
+        <a href="/home/" class="brand">HAUS OF <span>LYRA</span></a>
+        
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <ul class="nav-links">
+          <li><a href="/home/">Home</a></li>
+          <li><a href="/wedding-photography/">Wedding Photography</a></li>
+          <li><a href="/wedding-films/">Wedding Films</a></li>
+          <li><a href="/senior-portraits/">Senior Portraits</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" style="cursor: default;">More ▾</a>
+            <ul class="dropdown-menu">
+              <li><a href="/about/">About</a></li>
+              <li><a href="/vendors/" class="active">Favorite Vendors</a></li>
+              <li><a href="/hot-takes/">Blog</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a href="/home/#inquire" class="nav-btn">Inquire</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="vendors-hero">
+        <h1>My Favorite Vendors</h1>
+        <p>After 10+ years in this industry, these are the partners I trust most</p>
+    </section>
+
+    <!-- Main Content -->
+    <section class="vendors-section">
+        <div class="container">
+            <div class="vendors-intro">
+                <p>
+                    Over the past decade, I've had the privilege of working with incredible artisans and businesses 
+                    who share my values of intentionality, artistry, and connection. These are some of my absolute favorites—
+                    the people I return to again and again because they simply get it.
+                </p>
+            </div>
+
+            <div class="vendors-grid" id="vendors-container">
+                <!-- Vendors will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="cta-section">
+        <div class="container" style="text-align: center;">
+            <h2>Ready to Work Together?</h2>
+            <p>
+                Let's curate the perfect team to bring your vision to life.
+            </p>
+            <a href="/home/#inquire" class="vendor-link">Get Started →</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="background: var(--background);">
+      <div class="container footer-inner">
+        <div class="footer-brand">HAUS OF <span>LYRA</span></div>
+        <p class="footer-kicker">Des Moines, Iowa</p>
+        <p class="footer-copy">&copy; 2026 Haus of Lyra. All rights reserved. | <a href="/privacy-policy/" style="text-decoration: underline; color: rgba(255, 255, 255, 0.45);">Privacy Policy</a></p>
+      </div>
+    </footer>
+
+    <script>
+        // Vendor data configuration
+        const vendors = [
+            {
+                slug: "elizabeth-ann-photography",
+                category: "Photography",
+                name: "Elizabeth Ann Photography",
+                description: "Capturing authentic moments with timeless beauty. Elizabeth's eye for light and emotion brings artistry to every frame.",
+                url: "https://elizabethannphotography.com",
+                image: "elizabeth-ann",
+                imageFile: "elizabeth-ann-photography.jpg"
+            },
+            {
+                slug: "katie-mcdonald-photography",
+                category: "Photography",
+                name: "Katie McDonald Photography",
+                description: "Storytelling through photography. Katie captures the heart of your celebration with genuine joy and intentional artistry.",
+                url: "https://katiemcdonaldphotography.com",
+                image: "katie-mcdonald",
+                imageFile: "katie-mcdonald-photography.jpg"
+            },
+            {
+                slug: "the-loft-dsm",
+                category: "Venue",
+                name: "The Loft Des Moines",
+                description: "Historic, versatile, and stunning. An intimate urban space perfect for celebrations that honor connection and creativity.",
+                url: "https://www.theloftdsm.com",
+                image: "loft",
+                imageFile: "the-loft-dsm.jpg"
+            },
+            {
+                slug: "bash-dsm",
+                category: "Catering",
+                name: "Bash Des Moines",
+                description: "Elevated hospitality and culinary artistry. From intimate gatherings to grand celebrations, Bash creates moments of grace through food.",
+                url: "https://www.bashdsm.com",
+                image: "bash",
+                imageFile: "bash-dsm.jpg"
+            },
+            {
+                slug: "wedding-show-productions",
+                category: "Entertainment",
+                name: "Wedding Show Productions",
+                description: "Professional lighting, sound, and production that brings energy and intention to your celebration.",
+                url: "https://www.weddingshowproductions.com",
+                image: "wedding-show",
+                imageFile: "wedding-show-productions.jpg"
+            },
+            {
+                slug: "graze-craze",
+                category: "Catering",
+                name: "Graze Craze",
+                description: "Beautifully curated charcuterie and grazing displays. Artfully arranged to delight and nourish your guests.",
+                url: "https://www.grazecraze.com/locations/urbandale-ia",
+                image: "graze",
+                imageFile: "graze-craze.jpg"
+            },
+            {
+                slug: "snapxp",
+                category: "Photo Experience",
+                name: "SnapXP",
+                description: "Interactive photo experiences that create lasting memories. Fun, elegant, and perfectly suited to celebration moments.",
+                url: "https://snapxp.com",
+                image: "snapxp",
+                imageFile: "snapxp.jpg"
+            },
+            {
+                slug: "first-look-attire",
+                category: "Attire & Styling",
+                name: "First Look Attire",
+                description: "Stunning bridal and formal wear. Quality craftsmanship and thoughtful curation for your most important moments.",
+                url: "https://firstlookattire.com",
+                image: "first-look",
+                imageFile: "first-look-attire.jpg"
+            },
+            {
+                slug: "schaffers",
+                category: "Flowers & Design",
+                name: "Schaffers",
+                description: "Floral artistry and design that transforms your vision into reality. Beautiful arrangements for every season and celebration.",
+                url: "https://schaffers.com",
+                image: "schaffers",
+                imageFile: "schaffers.jpg"
+            },
+            {
+                slug: "langel-woods",
+                category: "Custom Attire",
+                name: "Langel Woods",
+                description: "Bespoke custom clothing that fits perfectly and makes you feel incredible. Timeless style for every occasion.",
+                url: "https://www.langelwoods.com",
+                image: "langel",
+                imageFile: "langel-woods.jpg"
+            }
+        ];
+
+        // Store images fetched from media library
+        let mediaLibraryImages = null;
+
+        // Function to build vendor cards
+        function renderVendors() {
+            const container = document.getElementById('vendors-container');
+            container.innerHTML = vendors.map(vendor => {
+                const imgPath = `/vendor-images/${vendor.imageFile}`;
+                return `
+                    <div class="vendor-card">
+                        <div class="vendor-image" id="image-${vendor.slug}">
+                            <img 
+                                class="vendor-img" 
+                                src="${imgPath}"
+                                data-vendor="${vendor.slug}"
+                                alt="${vendor.name}"
+                                onload="this.style.display='block'; this.parentElement.querySelector('.placeholder').style.display='none';"
+                                onerror="handleLocalImageError(this, '${vendor.category}')"
+                            >
+                            <div class="placeholder">${vendor.category}</div>
+                        </div>
+                        <div class="vendor-content">
+                            <div class="vendor-category">${vendor.category}</div>
+                            <h3>${vendor.name}</h3>
+                            <p>${vendor.description}</p>
+                            <a href="${vendor.url}" target="_blank" class="vendor-link">Visit Site →</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Handle image loading error, fallback to WP REST API if local doesn't load
+        function handleLocalImageError(img, category) {
+            const slug = img.getAttribute('data-vendor');
+            
+            // If we haven't fetched the WP Media Library yet, fetch it
+            if (mediaLibraryImages === null) {
+                mediaLibraryImages = {};
+                fetch('/wp-json/wp/v2/media?per_page=100')
+                    .then(res => res.json())
+                    .then(media => {
+                        if (Array.isArray(media)) {
+                            media.forEach(item => {
+                                const filename = item.source_url.split('/').pop().toLowerCase();
+                                mediaLibraryImages[filename] = item.source_url;
+                            });
+                        }
+                        resolveFallbackImage(img, slug, category);
+                    })
+                    .catch(err => {
+                        // Fallback completely to placeholder
+                        img.style.display = 'none';
+                        img.parentElement.querySelector('.placeholder').style.display = 'flex';
+                    });
+            } else {
+                resolveFallbackImage(img, slug, category);
+            }
+        }
+
+        function resolveFallbackImage(img, slug, category) {
+            const vendorImageNames = [
+                { vendor: "elizabeth-ann", names: ["elizabeth-ann-photography.jpg", "elizabeth-ann.jpg"] },
+                { vendor: "katie-mcdonald", names: ["katie-mcdonald-photography.jpg", "katie-mcdonald.jpg"] },
+                { vendor: "loft", names: ["the-loft-dsm.jpg", "loft-dsm.jpg", "loft.jpg"] },
+                { vendor: "bash", names: ["bash-dsm.jpg", "bash.jpg"] },
+                { vendor: "wedding-show", names: ["wedding-show-productions.jpg", "wedding-show.jpg"] },
+                { vendor: "graze", names: ["graze-craze.jpg", "graze.jpg"] },
+                { vendor: "snapxp", names: ["snapxp.jpg"] },
+                { vendor: "first-look", names: ["first-look-attire.jpg", "first-look.jpg"] },
+                { vendor: "schaffers", names: ["schaffers.jpg"] },
+                { vendor: "langel", names: ["langel-woods.jpg", "langel.jpg"] }
+            ];
+
+            const item = vendorImageNames.find(x => slug.startsWith(x.vendor) || x.vendor.startsWith(slug));
+            if (item) {
+                for (const name of item.names) {
+                    if (mediaLibraryImages[name.toLowerCase()]) {
+                        img.src = mediaLibraryImages[name.toLowerCase()];
+                        img.onload = function() {
+                            this.style.display = 'block';
+                            this.parentElement.querySelector('.placeholder').style.display = 'none';
+                        };
+                        // Override onerror to prevent infinite loops
+                        img.onerror = function() {
+                            this.style.display = 'none';
+                            this.parentElement.querySelector('.placeholder').style.display = 'flex';
+                        };
+                        return;
+                    }
+                }
+            }
+            
+            // If no match found in media library, keep hidden and show placeholder
+            img.style.display = 'none';
+            img.parentElement.querySelector('.placeholder').style.display = 'flex';
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            renderVendors();
+            
+            // Navbar Scroll Effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.background = 'rgba(5, 5, 6, 0.85)';
+                    navbar.style.height = '80px';
+                } else {
+                    navbar.style.background = 'rgba(5, 5, 6, 0.4)';
+                    navbar.style.height = '90px';
+                }
+            });
+
+            // Mobile Menu Controller
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.querySelector('.nav-links');
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => {
+                    menuToggle.classList.toggle('open');
+                    navLinks.classList.toggle('open');
+                    document.body.classList.toggle('menu-open');
+                });
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        menuToggle.classList.remove('open');
+                        navLinks.classList.remove('open');
+                        document.body.classList.remove('menu-open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
