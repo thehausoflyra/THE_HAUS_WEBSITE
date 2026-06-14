@@ -84,6 +84,16 @@ def main():
             "slug": "videography-worth-it",
             "title": "Why Wedding Videography Is Worth It",
             "html_file": "videography-worth-it.html",
+        },
+        {
+            "slug": "wedding-trends-2027",
+            "title": "Wedding Trends Defining 2027",
+            "html_file": "wedding-trends-2027.html",
+        },
+        {
+            "slug": "des-moines-wedding-destination",
+            "title": "Why Des Moines is the Ultimate Wedding Destination",
+            "html_file": "des-moines-wedding-destination.html",
         }
     ]
 
