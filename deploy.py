@@ -64,6 +64,21 @@ def main():
             "slug": "senior-gallery",
             "title": "Senior Gallery",
             "html_file": "senior-gallery.html",
+        },
+        {
+            "slug": "hot-takes",
+            "title": "20 Hot Takes From a Wedding Vendor",
+            "html_file": "hot-takes.html",
+        },
+        {
+            "slug": "midwest-weddings",
+            "title": "Midwest Weddings Are Different",
+            "html_file": "midwest-weddings.html",
+        },
+        {
+            "slug": "blog",
+            "title": "The Journal",
+            "html_file": "blog.html",
         }
     ]
 

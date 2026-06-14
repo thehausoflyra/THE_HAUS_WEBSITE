@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Journal | Haus of Lyra | Des Moines, Iowa</title>
+  <meta name="description" content="Stories, vendor tips, and thoughts on weddings, photography, and films in Iowa by Haus of Lyra.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      max-width: 900px;
+      margin: 4rem auto 0;
+    }
+    
+    @media(min-width: 768px) {
+      .blog-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .blog-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--silver);
+      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.04);
+    }
+
+    .blog-card-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .blog-card-title {
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      font-family: var(--font-serif);
+      line-height: 1.3;
+    }
+
+    .blog-card-desc {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--muted-foreground);
+      margin-bottom: 2rem;
+      flex-grow: 1;
+    }
+
+    .blog-card-link {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    .blog-card-link::after {
+      content: '→';
+      transition: transform 0.3s ease;
+    }
+
+    .blog-card:hover .blog-card-link::after {
+      transform: translateX(5px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Film Grain Overlay -->
+  <div class="noise-overlay"></div>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar-inner">
+      <a href="/home/" class="brand">HAUS OF <span>LYRA</span></a>
+      
+      <!-- Mobile Menu Toggle -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/wedding-photography/">Wedding Photography</a></li>
+        <li><a href="/wedding-films/">Wedding Films</a></li>
+        <li><a href="/senior-portraits/">Senior Portraits</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" style="cursor: default;">More ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/vendors/">Favorite Vendors</a></li>
+            <li><a href="/blog/" class="active">Blog</a></li>
+          </ul>
+        </li>
+      </ul>
+      <a href="/home/#inquire" class="nav-btn">Inquire</a>
+    </div>
+  </nav>
+
+  <!-- BLOG INDEX HEADER -->
+  <header class="hero" style="min-height: 45vh; padding-top: 160px; padding-bottom: 2rem;">
+    <div class="container" style="position: relative; z-index: 2; text-align: center;">
+      <span class="hero-kicker">Stories &amp; Advice</span>
+      <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1rem;">The Journal</h1>
+      <p class="hero-description" style="max-width: 600px; margin: 0 auto; font-size: 1.1rem;">
+        Thoughts, hot takes, and advice on capturing weddings and portraits in the heart of the Midwest.
+      </p>
+    </div>
+  </header>
+
+  <!-- BLOG GRID SECTION -->
+  <section class="section section-darker" style="padding-top: 2rem; min-height: 50vh;">
+    <div class="container">
+      <div class="blog-grid">
+        
+        <!-- Post 1 -->
+        <article class="blog-card-wrap">
+          <a href="/hot-takes/" class="blog-card">
+            <span class="blog-card-kicker">Vendor Tips</span>
+            <h2 class="blog-card-title">20 Hot Takes From a Wedding Vendor (That Might Save Your Sanity)</h2>
+            <p class="blog-card-desc">
+              After years in the wedding industry, navigating thousands of photos, and emergency safety pins, here are 20 honest hot takes straight from the vendor side of the aisle.
+            </p>
+            <span class="blog-card-link">Read Article</span>
+          </a>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="blog-card-wrap">
+          <a href="/midwest-weddings/" class="blog-card">
+            <span class="blog-card-kicker">Midwest Diaries</span>
+            <h2 class="blog-card-title">Midwest Weddings Are Different (And That’s Exactly Why They’re So Good)</h2>
+            <p class="blog-card-desc">
+              Midwest weddings hit different. Not because they're bigger or trendier, but because they're real. Here is why Iowa celebrations are truly elite.
+            </p>
+            <span class="blog-card-link">Read Article</span>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">HAUS OF <span>LYRA</span></div>
+      <p class="footer-kicker">Des Moines, Iowa</p>
+      <p class="footer-copy">&copy; 2026 Haus of Lyra. All rights reserved. | <a href="/privacy-policy/" style="text-decoration: underline; color: rgba(255, 255, 255, 0.45);">Privacy Policy</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(5, 5, 6, 0.85)';
+        navbar.style.height = '80px';
+      } else {
+        navbar.style.background = 'rgba(5, 5, 6, 0.4)';
+        navbar.style.height = '90px';
+      }
+    });
+
+    // Mobile Menu Controller
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('open');
+        navLinks.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+      });
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('open');
+          navLinks.classList.remove('open');
+          document.body.classList.remove('menu-open');
+        });
+      });
+    }
+  </script>
+</body>
+</html>
