@@ -79,6 +79,11 @@ def main():
             "slug": "blog",
             "title": "The Journal",
             "html_file": "blog.html",
+        },
+        {
+            "slug": "videography-worth-it",
+            "title": "Why Wedding Videography Is Worth It",
+            "html_file": "videography-worth-it.html",
         }
     ]
 
