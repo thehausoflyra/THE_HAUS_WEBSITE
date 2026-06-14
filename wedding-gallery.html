@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Gallery | Haus of Lyra</title>
+  <meta name="description" content="Explore the full documentary and editorial wedding photography gallery by Haus of Lyra.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Film Grain Overlay -->
+  <div class="noise-overlay"></div>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar-inner">
+      <a href="/home/" class="brand">HAUS OF <span>LYRA</span></a>
+      
+      <!-- Mobile Menu Toggle -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="/home/">Home</a></li>
+        <li><a href="/wedding-photography/">Wedding Photography</a></li>
+        <li><a href="/wedding-films/">Wedding Films</a></li>
+        <li><a href="/senior-portraits/">Senior Portraits</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" style="cursor: default;">More ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="/about/">About</a></li>
+            <li><a href="/vendors/">Favorite Vendors</a></li>
+            <li><a href="/hot-takes/">Blog</a></li>
+          </ul>
+        </li>
+      </ul>
+      <a href="/home/#inquire" class="nav-btn">Inquire</a>
+    </div>
+  </nav>
+
+  <!-- GALLERY HEADER -->
+  <header class="hero" style="min-height: 40vh; padding-top: 150px; padding-bottom: 2rem;">
+    <div class="container" style="position: relative; z-index: 2; text-align: center;">
+      <span class="hero-kicker">Portfolio</span>
+      <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1rem;">Wedding Gallery</h1>
+      <p class="hero-description" style="max-width: 600px; margin: 0 auto; font-size: 1.1rem;">
+        Honest moments, quiet pauses, and the unscripted emotions of wedding days.
+      </p>
+    </div>
+  </header>
+
+  <!-- MASONRY GALLERY SECTION -->
+  <section class="section section-darker" style="padding-top: 2rem;">
+    <div class="container">
+      <div class="gallery-grid" id="gallery-grid">
+        <!-- Render 1.png to 14.png and 21.png -->
+        <div class="gallery-item" data-index="0">
+          <img src="/wedding-pictures/1.png" alt="Wedding Photograph 1" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="1">
+          <img src="/wedding-pictures/2.png" alt="Wedding Photograph 2" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="2">
+          <img src="/wedding-pictures/3.png" alt="Wedding Photograph 3" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="3">
+          <img src="/wedding-pictures/4.png" alt="Wedding Photograph 4" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="4">
+          <img src="/wedding-pictures/5.png" alt="Wedding Photograph 5" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="5">
+          <img src="/wedding-pictures/6.png" alt="Wedding Photograph 6" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="6">
+          <img src="/wedding-pictures/7.png" alt="Wedding Photograph 7" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="7">
+          <img src="/wedding-pictures/8.png" alt="Wedding Photograph 8" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="8">
+          <img src="/wedding-pictures/9.png" alt="Wedding Photograph 9" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="9">
+          <img src="/wedding-pictures/10.png" alt="Wedding Photograph 10" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="10">
+          <img src="/wedding-pictures/11.png" alt="Wedding Photograph 11" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="11">
+          <img src="/wedding-pictures/12.png" alt="Wedding Photograph 12" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="12">
+          <img src="/wedding-pictures/13.png" alt="Wedding Photograph 13" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="13">
+          <img src="/wedding-pictures/14.png" alt="Wedding Photograph 14" loading="lazy">
+        </div>
+        <div class="gallery-item" data-index="14">
+          <img src="/wedding-pictures/21.png" alt="Wedding Photograph 21" loading="lazy">
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 5rem;">
+        <a href="/wedding-photography/" class="btn btn-outline">Back to Photography</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox-modal" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close Lightbox">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous Image">&#10094;</button>
+    <div class="lightbox-content">
+      <img src="" alt="Large View" class="lightbox-img" id="lightbox-img">
+    </div>
+    <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next Image">&#10095;</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">HAUS OF <span>LYRA</span></div>
+      <p class="footer-kicker">Des Moines, Iowa</p>
+      <p class="footer-copy">&copy; 2026 Haus of Lyra. All rights reserved. | <a href="/privacy-policy/" style="text-decoration: underline; color: rgba(255, 255, 255, 0.45);">Privacy Policy</a></p>
+    </div>
+  </footer>
+
+  <!-- CONTROLLERS -->
+  <script>
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(5, 5, 6, 0.85)';
+        navbar.style.height = '80px';
+      } else {
+        navbar.style.background = 'rgba(5, 5, 6, 0.4)';
+        navbar.style.height = '90px';
+      }
+    });
+
+    // Mobile Menu Controller
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('open');
+        navLinks.classList.toggle('open');
+        document.body.classList.toggle('menu-open');
+      });
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('open');
+          navLinks.classList.remove('open');
+          document.body.classList.remove('menu-open');
+        });
+      });
+    }
+
+    // Lightbox Logic
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.getElementById('lightbox-close');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+    
+    let currentIndex = 0;
+    const images = Array.from(galleryItems).map(item => item.querySelector('img').src);
+
+    function showImage(index) {
+      if (index < 0) index = images.length - 1;
+      if (index >= images.length) index = 0;
+      currentIndex = index;
+      lightboxImg.src = images[currentIndex];
+    }
+
+    galleryItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const index = parseInt(item.getAttribute('data-index'), 10);
+        showImage(index);
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      showImage(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      showImage(currentIndex + 1);
+    });
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.classList.contains('active')) {
+        if (e.key === 'Escape') {
+          lightbox.classList.remove('active');
+          document.body.style.overflow = '';
+        } else if (e.key === 'ArrowLeft') {
+          showImage(currentIndex - 1);
+        } else if (e.key === 'ArrowRight') {
+          showImage(currentIndex + 1);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

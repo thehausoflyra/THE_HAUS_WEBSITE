@@ -54,6 +54,16 @@ def main():
             "slug": "vendors",
             "title": "My Favorite Vendors",
             "html_file": "vendors.html",
+        },
+        {
+            "slug": "wedding-gallery",
+            "title": "Wedding Gallery",
+            "html_file": "wedding-gallery.html",
+        },
+        {
+            "slug": "senior-gallery",
+            "title": "Senior Gallery",
+            "html_file": "senior-gallery.html",
         }
     ]
 
